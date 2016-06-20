@@ -1,0 +1,2102 @@
+<!-- Mit XMLSpy v2016 (http://www.altova.com) von Ramin Shemirani (ConmatiX Engineering Solutions GmbH) bearbeitet -->
+<Shapes xmlns="http://www.evolus.vn/Namespace/Pencil" xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="NXOpen" displayName="NXOpen Blockstyler UI" description="UI components from the Blockstyler UI NX Open framework" author="Ramin Shemirani" url="https://github.com/raminshemirani/NX_BlockstylerUI-Pencil-Stencils">
+	<Properties>
+		<PropertyGroup name="Theme">
+			<Property name="defaultColorTheme" type="Enum" displayName="Theme" p:enumValues="['dark|Dark Theme', 'light|Light Theme']">dark</Property>
+			<Property name="scale" type="Enum" displayName="Scaling" p:enumValues="['small|Small', 'normal|Normal', 'large|Large']">small</Property>
+			<Property name="secondaryFillColor" type="Color" displayName="Primary Color">#33FFFFff</Property>
+		</PropertyGroup>
+		<PropertyGroup name="Text">
+			<Property name="defaultTextFont" type="Font" displayName="Default Font">"Roboto",Arial,sans-serif|normal|normal|12px</Property>
+			<Property name="defaultDarkTextColor" type="Color" displayName="Default Text Color">#ffffffff</Property>
+			<Property name="defaultLightTextColor" type="Color" displayName="Default Text Color">#333333ff</Property>
+			<Property name="textFont" type="Font" displayName="Default Font">"Helvetica Neue", Helvetica, Arial, sans-serif|400|normal|14px</Property>
+			<Property name="textColor" type="Color" displayName="Default Text Color">#333333ff</Property>
+			<Property name="NXUIDIALOGUEtextFont" type="Font" displayName="NXUIDIALOGUEtextFont">Arial|400|normal|15px</Property>
+			<Property name="NXUIGROUPtextFont" type="Font" displayName="NXUIGROUPtextFont">Arial|400|normal|18px</Property>
+			<Property name="NXUITextBlue" type="Color" displayName="NXUITextBlue">#5688B7</Property>
+		</PropertyGroup>
+		<PropertyGroup name="Line">
+			<Property name="strokeColor" type="Color" displayName="Default Line Color">#ccccccff</Property>
+			<Property name="strokeStyle" type="StrokeStyle" displayName="Default Line Style">1|</Property>
+		</PropertyGroup>
+		<PropertyGroup name="Colors: NXUI">
+			<Property name="NXUIGreen" type="Color" displayName="NXUIGreen">#5C8884</Property>
+			<Property name="NXUIWhite" type="Color" displayName="NXUIWhite">##FFFFFF</Property>
+			<Property name="NXUIOrange" type="Color" displayName="NXUIOrange">#FACC2E</Property>
+			<Property name="NXUILightGreen" type="Color" displayName="NXUILightGreen">#F1F5F5</Property>
+		</PropertyGroup>
+		<PropertyGroup name="Colors: Grays">
+			<Property name="neutral" type="Color" displayName="Neutral">#ffffffff</Property>
+			<Property name="grayDarker" type="Color" displayName="gray-darker">#222222ff</Property>
+			<Property name="grayDark" type="Color" displayName="gray-dark">#050505ff</Property>
+		</PropertyGroup>
+		<PropertyGroup name="Colors: Grays (cont.)">
+			<Property name="gray" type="Color" displayName="gray">#545454ff</Property>
+			<Property name="grayLight" type="Color" displayName="gray-light">#777777ff</Property>
+			<Property name="grayLighter" type="Color" displayName="gray-lighter">#eeeeeeff</Property>
+		</PropertyGroup>
+		<PropertyGroup name="Colors: Brand">
+			<Property name="brandPrimary" type="Color" displayName="brand-primary">#337ab7ff</Property>
+			<Property name="brandSuccess" type="Color" displayName="brand-success">#5cb85cff</Property>
+			<Property name="brandInfo" type="Color" displayName="brand-info">#5bc0deff</Property>
+		</PropertyGroup>
+		<PropertyGroup name="Colors: Brand (cont.)">
+			<Property name="brandWarning" type="Color" displayName="brand-warning">#f0ad4eff</Property>
+			<Property name="brandDanger" type="Color" displayName="brand-danger">#d9534fff</Property>
+		</PropertyGroup>
+	</Properties>
+	<Script><![CDATA[
+	/**
+	 * Takes RGB values (each between 0 and 255) and returns the corresponding HSL values (H between 0 and 360, S and L each between 0 and 100).
+	 * Based on http://stackoverflow.com/a/9493060
+	 */
+	collection.rgbToHsl = function(r, g, b) {
+		var max, min, h, s, l;
+
+		r = r / 255;
+		g = g / 255;
+		b = b / 255;
+
+		max = Math.max(r, g, b);
+		min = Math.min(r, g, b);
+
+		l = (min + max) / 2;
+
+		diff = max - min;
+
+		if (diff == 0) {
+			s = 0;
+			h = 0;
+		} else {
+			if(l > 0.5) {
+				s = (diff) / (2 - min - max)
+			} else {
+				s = diff / (max + min)
+			}
+
+			switch(max) {
+				case r:
+					h = (g - b) / diff + (g < b ? 6 : 0);
+					break;
+				case g:
+					h = (b - r) / diff + 2;
+					break;
+				case b:
+					h = (r - g) / diff + 4;
+					break;
+			}
+		}
+
+		return {h: Math.round(h * 60), s: Math.round(s * 100), l: Math.round(l * 100)};
+	}
+
+	/**
+	 * Takes HSL values (H between 0 and 360, S and L each between 0 and 100) and returns the corresponding RGB values (each between 0 and 255)
+	 * Based on pseudo-code in the W3 Color Model document (http://www.w3.org/TR/2011/REC-css3-color-20110607/#hsl-color)
+	 */
+	collection.hslToRgb = function (h, s, l) {
+		var m1, m2, m3, r, g, b;
+
+		h = h / 360;
+		s = s / 100;
+		l = l / 100;
+
+		m2 = l <= 0.5 ? l * (s + 1) : l + s - l * s;
+
+		m1 = l * 2 - m2;
+
+		r = collection.hueToRgb(m1, m2, h + 1/3);
+		g = collection.hueToRgb(m1, m2, h);
+		b = collection.hueToRgb(m1, m2, h - 1/3);
+
+		return {r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255)};
+	}
+
+	collection.hueToRgb = function (m1, m2, h) {
+		if(h < 0) {
+			h = h + 1;
+		} else if(h > 1) {
+			h = h - 1;
+		}
+
+		if(h*6 < 1) {
+			return m1 + (m2 - m1) * h * 6;
+		} else if(h*2 < 1) {
+			return m2;
+		} else if(h*3 < 2) {
+			return m1 + (m2 - m1) * (2/3 - h) * 6
+		}
+
+		return m1;
+	}
+
+	/**
+	 * Darkens the given color by the given amount (a number between 0 and 100)
+	 */
+	collection.darken = function (color, amount) {
+		return collection._adjustLightness(color, -amount);
+	}
+
+	/**
+	 * Lightens the given color by the given amount (a number between 0 and 100)
+	 */
+	collection.lighten = function (color, amount) {
+		return collection._adjustLightness(color, amount);
+	}
+
+	/**
+	 * Offsets the hue of a color by the given amount (in degrees)
+	 */
+	collection.spin = function (color, amount) {
+		var hsl = collection.rgbToHsl(color.r, color.g, color.b);
+		newH = (hsl.h + amount) % 360;
+		hsl.h = (newH >= 0 ? newH : newH + 360);
+
+		rgb = collection.hslToRgb(hsl.h, hsl.s, hsl.l);
+
+		return Color.fromString("rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + color.a + ")");
+	}
+
+	/**
+	 * Changes the lightness of the given color by the given amount (a number between -100 and 100)
+	 */
+	collection._adjustLightness = function (color, amount) {
+		var hsl = collection.rgbToHsl(color.r, color.g, color.b);
+
+		hsl.l = Math.min(Math.max(hsl.l + amount, 0), 100);
+		rgb = collection.hslToRgb(hsl.h, hsl.s, hsl.l);
+
+		return Color.fromString("rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + color.a + ")");
+	}
+
+	collection.setCssTextAlignment = function(css, h, v) {
+		switch (parseInt(h, 10)) {
+			case 0:
+				css.set("text-align", "left");
+				break;
+			case 1:
+				css.set("text-align", "center");
+				break;
+			case 2:
+				css.set("text-align", "right");
+				break;
+		}
+
+		switch (parseInt(v, 10)) {
+			case 0:
+				css.set("vertical-align", "top");
+				break;
+			case 1:
+				css.set("vertical-align", "middle");
+				break;
+			case 2:
+				css.set("vertical-align", "bottom");
+				break;
+		}
+	}
+
+	]]></Script>
+	<Shape id="OKButton" displayName="OKButton" icon="Icons/OKButton.png">
+		<Properties>
+			<PropertyGroup>
+				<Property name="box" type="Dimension">60,20</Property>
+				<Property name="smartColor" displayName="Automatic border color" type="Bool">false</Property>
+				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Text">
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Button]]></Property>
+				<Property name="textFont" displayName="Default Font" type="Font">
+					<E>$$textFont</E>
+				</Property>
+				<Property name="textColor" displayName="Text Color" type="Color">
+					<E>$$textColor</E>
+				</Property>
+				<Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Background">
+				<Property name="fillColor" displayName="Color" type="Color">
+					<E>$$neutral</E>
+				</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Border">
+				<Property name="strokeColor" displayName="Border Color" type="Color">
+					<E>$$strokeColor</E>
+				</Property>
+				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Style">
+				<Property name="hoverstatus" displayName="Hover Status" type="Enum" p:enumValues="['standard|Standard', 'hover|Hover']">none</Property>
+				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
+				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+			</PropertyGroup>
+		</Properties>
+		<Behaviors/>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<image id="OK" width="74" height="28" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAAAcBAMAAAA0KTSoAAAAMFBMVEUhISEhIWshQowhY60x
+IUpCnM5KISFKnOdjQiFjtedzYyFzzueMe0qMzuecpXuczt45mxpNAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTBxUngIz5CQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAAxElEQVQ4jcWQMQrCQBBFU3gJCR4h2Isy6cQDWEoK
+i+ABJKSKjWewlOhFcgtBCNuIR4gKk/0u6TbF7IIBB5ZtHv/N/GDtM0EC93y8qFdQeFHDGW//
+N1ZxBCY8NpKxiVDWTHop7nVR6k5MTdKjbGMK6DHTEa2QpSdQSHlG5hOo0GTseHS2ovpGkwWd
+8jxEj7KzVq15TGUtUbjCtMX0jiQjGur6wlbaHjjEpHiB51Sk0HXQijfCblPI+oEqnMzQxjzP
+Tplj9l/u26p/1JpmOgAAAABJRU5ErkJggg==
+"/>
+		</p:Content>
+	</Shape>
+	<Shape id="APPLYButton" displayName="APPLYButton" icon="Icons/APPLYButton.png">
+		<Properties>
+			<PropertyGroup>
+				<Property name="box" type="Dimension">71,34</Property>
+				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
+				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Text">
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Button]]></Property>
+				<Property name="textFont" displayName="Default Font" type="Font">
+					<E>$$textFont</E>
+				</Property>
+				<Property name="textColor" displayName="Text Color" type="Color">
+					<E>$$textColor</E>
+				</Property>
+				<Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Background">
+				<Property name="fillColor" displayName="Color" type="Color">
+					<E>$$neutral</E>
+				</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Border">
+				<Property name="strokeColor" displayName="Border Color" type="Color">
+					<E>$$strokeColor</E>
+				</Property>
+				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Style">
+				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
+				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
+				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+			</PropertyGroup>
+		</Properties>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<image id="APPLY" width="74" height="28" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAAAcBAMAAAA0KTSoAAAAMFBMVEUhISEhIWMhQnshY5xC
+IUJCIWNCe7VSISFjIUJ7nHuMWiGtraW1e0LGxsbOnGPOtXslKfgAAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTCBENNAey5gAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAA20lEQVQ4jc3QOwoCMRAG4ICwt/AIHmE6ESy8iDCW
+XsJLLCjp7OxEEIU9gaLM5t9txN51D+BELbZIcCt1QkIeHzNhzLpNmA0+R95K4eu5fqz2jfuC
+Y6rfuHcx5cbUQsm6h2LSJ1wvA1UZSgqoChYu0WXLQsIVhAMq0yGEGnOUI+EzjqGKM6z8dw5a
+CwPHwvuAKowx+gTRmlgKlz0bUAocOcLNV+zqadgNqPMGeSIJpkj55JMuKKB2Oq2MDcGmHZ+5
+DvbLx7OZ2Wt/j6pni96/tlHVyLWlqIrEn6r8ATjrUeTX+Q9MAAAAAElFTkSuQmCC
+"/>
+			<path id="bg"/>
+			<text id="text"/>
+			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+		</p:Content>
+	</Shape>
+	<Shape id="CANCELButton" displayName="CANCELButton" icon="Icons/CANCELButton.png">
+		<Properties>
+			<PropertyGroup/>
+			<PropertyGroup name="Style">
+				<Property name="hovertype" displayName="Hover Type" type="Enum" p:enumValues="['CANCEL|Standard', 'CANCEL_HOVER|Hover']">CANCEL</Property>
+			</PropertyGroup>
+		</Properties>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<g id="CANCEL">
+				<image id="CANCEL" width="74" height="28" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAAAcBAMAAAA0KTSoAAAAMFBMVEUhISEhIWMhOXM5c61C
+ITljISFjnLV7QiF7Y3uUYyGtra21e0LGlGPGrXPGxs7OzpxuUJAmAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTCBsyeI53UQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAA8ElEQVQ4jdWSMQ7CMAxFLYFg4wAM3AAfgQll5B4s
+FhPnqEDiEAxlY0bcAAaugAKNzVBU6NCSFqhEUwELAz+RE8Vfz4kVmH8j8PmzDn/tkt+wVnUs
+Z5cO64qyK7tmDmtdUWn63DxdMs7CqJZch31bfURBs1VULFimY0NAUU+3NQYDoTVvC9bhxWUX
+jHqCZ8rYETn3Mu38nYCajNr6bOoANC27UmVDhJZFojYPtlNRspOQj7gnM9gQG1XZiTPyLqRT
+ztIoNOGL2wkWD/AIXcsSxR6QhkYF653+4H+905es+SJJJZtWqSzs8BM/uSuWPBPHN+bsf+wE
+BWqTAAAAAElFTkSuQmCC
+"/>
+			</g>
+		</p:Content>
+	</Shape>
+	<Shape id="ACTIONButton" displayName="ACTIONButton" icon="Icons/ACTIONButton.png">
+		<Properties>
+			<PropertyGroup>
+				<Property name="box" type="Dimension">270,20</Property>
+				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
+				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Text">
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Action Button]]></Property>
+				<Property name="textFont" displayName="Default Font" type="Font">
+					<E>$$NXUIDIALOGUEtextFont</E>
+				</Property>
+				<Property name="textColor" displayName="Text Color" type="Color">
+					<E>$$textColor</E>
+				</Property>
+				<Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Background">
+				<Property name="fillColor" displayName="Color" type="Color">
+					<E>$$neutral</E>
+				</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Border">
+				<Property name="strokeColor" displayName="Border Color" type="Color">
+					<E>$$strokeColor</E>
+				</Property>
+				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Style">
+				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
+				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
+				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+			</PropertyGroup>
+		</Properties>
+		<Behaviors>
+			<For ref="bg">
+				<D>
+				var tl, tr, br, bl; // Radius of each corner
+				var r = $radius.x;
+				switch ($position.value) {
+					case "middle":
+						tl = tr = br = bl = 0;
+						break;
+					case "left":
+						tl = bl = r;
+						tr = br = 0;
+						break;
+					case "right":
+						tr = br = r;
+						tl = bl =0;
+						break;
+					case "top":
+						tl = tr = r;
+						bl = br = 0;
+						break;
+					case "bottom":
+						tl = tr = 0;
+						bl = br = r;
+						break;
+					default:
+						tl = tr = br =bl = r;
+						break;
+				}
+
+				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
+				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
+				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
+				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
+			</D>
+				<Fill>$fillColor</Fill>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+			<For ref="text">
+				<Font>$textFont</Font>
+				<Fill>$textColor</Fill>
+				<Color>$textColor</Color>
+				<PlainTextContent>
+					<Arg>$textContent</Arg>
+					<Arg>
+					var width = $box.w;
+
+					switch ($dropdown.value) {
+						case "split":
+							width = $box.w - 26; break;
+						case "dropdown":
+							width = $box.w - 12; break;
+					}
+
+					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
+					<Arg>$textAlign</Arg>
+				</PlainTextContent>
+			</For>
+			<For ref="arrow">
+				<Visibility>$dropdown.value != "none"</Visibility>
+				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
+				<Fill>$textColor</Fill>
+			</For>
+			<For ref="split">
+				<Visibility>$dropdown.value == "split"</Visibility>
+				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+		</Behaviors>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<image id="ACTION" width="325" height="32" x="-25" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUUAAAAgBAMAAAB3FHczAAAAMFBMVEWvr6/+/v7+/v/+////
+/v7///7///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADsf/7OAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTBwEFe0JvuAAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAAyUlEQVRYhe3VwQnDMAwFUJ96DbKLR/AIvnsEjyCw
+tf8IldNA0pJbf8Eh+oEQdBAPGynOTZ/FPWT2mBETM2JiRkzMiMl9jOxFaPsmDQfZCz8HZKS8
+kzjqq4X5jHF+43OQmFaWGjkSxVHwgOYoo4L0yTXKZlzPkXLJgO4oY0nU/bjhg1ELNQG6o4wc
+SFndy8HYdMIToDvK2OnEGACtBWeUQu37rhtkYoBGPp2ZOtPMSPvcPf29eyA78j7/6//GjJiY
+ERMzYnIN4/xZXsm9YqYASFMsAAAAAElFTkSuQmCC
+"/>
+			<path id="bg"/>
+			<text id="text"/>
+			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+		</p:Content>
+	</Shape>
+	<Shape id="LabelInput" displayName="LabelInput" icon="Icons/LabelInput_Thumb.png">
+		<Properties>
+			<PropertyGroup>
+				<Property name="box" type="Dimension">170,20</Property>
+				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
+				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
+			</PropertyGroup>
+			<PropertyGroup name="TextLabel">
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[String InputBox]]></Property>
+				<Property name="textFont" displayName="Default Font" type="Font">
+					<E>$$NXUIDIALOGUEtextFont</E>
+				</Property>
+				<Property name="textColor" displayName="Text Color" type="Color">
+					<E>$$textColor</E>
+				</Property>
+				<Property name="textAlign" displayName="Text Alignment" type="Alignment"><![CDATA[center]]>1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Text">
+				<Property name="textlabelContent" displayName="Text Content" type="PlainText"><![CDATA[Value]]></Property>
+				<Property name="textlabelFont" displayName="Default Font" type="Font">
+					<E>$$NXUIDIALOGUEtextFont</E>
+				</Property>
+				<Property name="textlabelColor" displayName="Text Color" type="Color">
+					<E>$$textColor</E>
+				</Property>
+				<Property name="textlabelAlign" displayName="Text Alignment" type="Alignment"><![CDATA[center]]>1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Background">
+				<Property name="fillColor" displayName="Color" type="Color">
+					<E>$$neutral</E>
+				</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Border">
+				<Property name="strokeColor" displayName="Border Color" type="Color">
+					<E>$$strokeColor</E>
+				</Property>
+				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Style">
+				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
+				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
+				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+			</PropertyGroup>
+		</Properties>
+		<Behaviors>
+			<For ref="bg">
+				<D>
+				var tl, tr, br, bl; // Radius of each corner
+				var r = $radius.x;
+				switch ($position.value) {
+					case "middle":
+						tl = tr = br = bl = 0;
+						break;
+					case "left":
+						tl = bl = r;
+						tr = br = 0;
+						break;
+					case "right":
+						tr = br = r;
+						tl = bl =0;
+						break;
+					case "top":
+						tl = tr = r;
+						bl = br = 0;
+						break;
+					case "bottom":
+						tl = tr = 0;
+						bl = br = r;
+						break;
+					default:
+						tl = tr = br =bl = r;
+						break;
+				}
+
+				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
+				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
+				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
+				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
+			</D>
+				<Fill>$fillColor</Fill>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+			<For ref="text">
+				<Font>$textFont</Font>
+				<Fill>$textColor</Fill>
+				<Color>$textColor</Color>
+				<PlainTextContent>
+					<Arg>$textContent</Arg>
+					<Arg>
+					var width = $box.w;
+
+					switch ($dropdown.value) {
+						case "split":
+							width = $box.w - 26; break;
+						case "dropdown":
+							width = $box.w - 12; break;
+					}
+
+					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
+					<Arg>$textAlign</Arg>
+				</PlainTextContent>
+			</For>
+			<For ref="arrow">
+				<Visibility>$dropdown.value != "none"</Visibility>
+				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
+				<Fill>$textColor</Fill>
+			</For>
+			<For ref="split">
+				<Visibility>$dropdown.value == "split"</Visibility>
+				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+		</Behaviors>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<image id="STRING" width="336" height="29" x="-5" y="-5"/>
+			<path id="bg"/>
+			<text id="text"/>
+			<textlabel id="textlabel"/>
+			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+		</p:Content>
+	</Shape>
+	<Shape id="StringInput" displayName="StringInput" icon="Icons/StringInput_Thumb.png">
+		<Properties>
+			<PropertyGroup>
+				<Property name="box" type="Dimension">90,24</Property>
+				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
+				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
+			</PropertyGroup>
+			<PropertyGroup name="TextLabel">
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[TextString]]></Property>
+				<Property name="textFont" displayName="Default Font" type="Font">
+					<E>$$NXUIDIALOGUEtextFont</E>
+				</Property>
+				<Property name="textColor" displayName="Text Color" type="Color">
+					<E>$$textColor</E>
+				</Property>
+				<Property name="textAlign" displayName="Text Alignment" type="Alignment"><![CDATA[center]]>1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Text">
+				<Property name="textlabelContent" displayName="Text Content" type="PlainText"><![CDATA[Value]]></Property>
+				<Property name="textlabelFont" displayName="Default Font" type="Font">
+					<E>$$NXUIDIALOGUEtextFont</E>
+				</Property>
+				<Property name="textlabelColor" displayName="Text Color" type="Color">
+					<E>$$textColor</E>
+				</Property>
+				<Property name="textlabelAlign" displayName="Text Alignment" type="Alignment"><![CDATA[center]]>1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Background">
+				<Property name="fillColor" displayName="Color" type="Color">
+					<E>$$neutral</E>
+				</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Border">
+				<Property name="strokeColor" displayName="Border Color" type="Color">
+					<E>$$strokeColor</E>
+				</Property>
+				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Style">
+				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
+				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
+				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+			</PropertyGroup>
+		</Properties>
+		<Behaviors>
+			<For ref="bg">
+				<D>
+				var tl, tr, br, bl; // Radius of each corner
+				var r = $radius.x;
+				switch ($position.value) {
+					case "middle":
+						tl = tr = br = bl = 0;
+						break;
+					case "left":
+						tl = bl = r;
+						tr = br = 0;
+						break;
+					case "right":
+						tr = br = r;
+						tl = bl =0;
+						break;
+					case "top":
+						tl = tr = r;
+						bl = br = 0;
+						break;
+					case "bottom":
+						tl = tr = 0;
+						bl = br = r;
+						break;
+					default:
+						tl = tr = br =bl = r;
+						break;
+				}
+
+				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
+				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
+				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
+				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
+			</D>
+				<Fill>$fillColor</Fill>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+			<For ref="text">
+				<Font>$textFont</Font>
+				<Fill>$textColor</Fill>
+				<Color>$textColor</Color>
+				<PlainTextContent>
+					<Arg>$textContent</Arg>
+					<Arg>
+					var width = $box.w;
+
+					switch ($dropdown.value) {
+						case "split":
+							width = $box.w - 26; break;
+						case "dropdown":
+							width = $box.w - 12; break;
+					}
+
+					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
+					<Arg>$textAlign</Arg>
+				</PlainTextContent>
+			</For>
+			<For ref="arrow">
+				<Visibility>$dropdown.value != "none"</Visibility>
+				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
+				<Fill>$textColor</Fill>
+			</For>
+			<For ref="split">
+				<Visibility>$dropdown.value == "split"</Visibility>
+				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+		</Behaviors>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<image id="STRING" width="336" height="29" x="-230" y="-2" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVAAAAAdBAMAAAAOdynsAAAAMFBMVEWvr6/+/v7+/v/+////
+/v7///7///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADsf/7OAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTDCUdlZP5qQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAABuElEQVRYhe2YS27DIBCGs2I/UHGChn0XYc8RuEEs
+Afc/Qv8ZPxo/KkLrJIrkieJo8G/8eV6WcipvYqfn37HVXgWqGvXX/ucA/dVUo/4ArZlq1B+g
+NVP3iDoiHAPZBSi50tkbHa2uJIMv6dHNeqXYEzRTibYkXfQS1FRAk5ZVPNAcNJmHgPY7d66E
+JSjVQI2sxlH0FNDoS3QL0OA7G10yqI1PhJeIPA4ucsa5XoirhUGleIjOOpOHAOthCvOuoAhc
+8BzUOWhnB1Dd0QVcFkgmmSgZ99GOEXXs4MxZd4YF+Oj0CNCAeGyBJj2AWiQ1eEJRRpc1pxoL
+DCSgdGEH+cgaxBAMZ/YH5SrbAi30NQfNOqDJgcTFwkCsIiMONsioCRYkkxszfy+ocGyARlqB
++lIWoIMjoLIP+wnl/ABQTCbcfdVMuN0i9Sa4AfQm9b0TJPUu9E/xMwp2BQXH1ngq0j9xAnXc
+MpmrcdZMvTM1U+ZmciLaFxTxwONnsx74aDGbUYMjaD+ErDDwRJpAp/FUZDZl+qD1a+zfoKjE
+7VfoM0016g/QmqlG/QFaM9WoP0Brphr1LwN9m39K/mjf5Bz7fKSInswAAAAASUVORK5CYII=
+"/>
+			<path id="bg"/>
+			<text id="text"/>
+			<textlabel id="textlabel"/>
+			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+		</p:Content>
+	</Shape>
+	<Shape id="DropdownInput" displayName="DropdownInput" icon="Icons/DropdownInput.png">
+		<Properties>
+			<PropertyGroup>
+				<Property name="box" type="Dimension">71,34</Property>
+				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
+				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Text">
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Button]]></Property>
+				<Property name="textFont" displayName="Default Font" type="Font">
+					<E>$$textFont</E>
+				</Property>
+				<Property name="textColor" displayName="Text Color" type="Color">
+					<E>$$textColor</E>
+				</Property>
+				<Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Background">
+				<Property name="fillColor" displayName="Color" type="Color">
+					<E>$$neutral</E>
+				</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Border">
+				<Property name="strokeColor" displayName="Border Color" type="Color">
+					<E>$$strokeColor</E>
+				</Property>
+				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Style">
+				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
+				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
+				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+			</PropertyGroup>
+		</Properties>
+		<Behaviors>
+			<For ref="bg">
+				<D>
+				var tl, tr, br, bl; // Radius of each corner
+				var r = $radius.x;
+				switch ($position.value) {
+					case "middle":
+						tl = tr = br = bl = 0;
+						break;
+					case "left":
+						tl = bl = r;
+						tr = br = 0;
+						break;
+					case "right":
+						tr = br = r;
+						tl = bl =0;
+						break;
+					case "top":
+						tl = tr = r;
+						bl = br = 0;
+						break;
+					case "bottom":
+						tl = tr = 0;
+						bl = br = r;
+						break;
+					default:
+						tl = tr = br =bl = r;
+						break;
+				}
+
+				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
+				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
+				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
+				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
+			</D>
+				<Fill>$fillColor</Fill>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+			<For ref="text">
+				<Font>$textFont</Font>
+				<Fill>$textColor</Fill>
+				<Color>$textColor</Color>
+				<PlainTextContent>
+					<Arg>$textContent</Arg>
+					<Arg>
+					var width = $box.w;
+
+					switch ($dropdown.value) {
+						case "split":
+							width = $box.w - 26; break;
+						case "dropdown":
+							width = $box.w - 12; break;
+					}
+
+					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
+					<Arg>$textAlign</Arg>
+				</PlainTextContent>
+			</For>
+			<For ref="arrow">
+				<Visibility>$dropdown.value != "none"</Visibility>
+				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
+				<Fill>$textColor</Fill>
+			</For>
+			<For ref="split">
+				<Visibility>$dropdown.value == "split"</Visibility>
+				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+		</Behaviors>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<image id="DROPDOWN" width="336" height="29" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVAAAAAdBAMAAAAOdynsAAAAMFBMVEUiIiKvr6/+/v7+/v/+
+/////v7///7///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADIGQcHAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTDB8qCIeC3wAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAB20lEQVRYhe2YzWrDMAzHc9t5p95lge+DzU+w+e6+
+gZ6gGGK//iTZYWnT5qNzD4EI2tJY+vuHvijt8k6se4nqe2s7vQj01F7wAG0teIC2FjxAWwvu
+CzQCuOERudE5H/hpVMRl3ZwBFt3W2wBqoxkeDaCBCRP4KVS4gz7VzYT5vDFqDWiCe6BCCbcx
+K0FvStEQFMByqQ05Qv7gohfo4EDqz81BgAH4DKIV5wRgHusmOSNxN7lE5VF/rbeu696uQE1E
+gfVncuDBBy8pkBd/t2Qj9kgmG/YJnjuFnRO4ew1cQXtpGY4QqRqF/RNNe+m6PAaNyNkLP5wG
++kDOBrkRaO45z8mQzfJIQNUZHtdzALUqVaJEYjto1oSOpl4ySJ8o5fI9F/sKNJkA0hTVMVpx
+/uKaugVQp1IlKsy0yoxd8hjUKlQFdXqJgjrtUQFV5FR6YhWoKaCouyPUXnraxqBczW8tvdFL
+dOqtTD2XHgVJr60ZLX0yA6prhCNYqkY9dN4Iej1M5MselQ3F8y7Tg3JtX0B1mGZBdY9ys7DU
+d41iiRagf+sp6m4iTYksKShvMkGyqWhYT/OgvL2wdHWN0gv+CTpvk5W/RrexHaDbQ5YE9/Uz
+r7md2gseoK0Fd/OXzi+z6Q9Lle4e4wAAAABJRU5ErkJggg==
+"/>
+			<path id="bg"/>
+			<text id="text"/>
+			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+		</p:Content>
+	</Shape>
+	<Shape id="CHECKButton" displayName="CHECKButton" icon="Icons/CHECKButton.png">
+		<Properties>
+			<PropertyGroup>
+				<Property name="box" type="Dimension">250,24</Property>
+				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
+				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Text">
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Check Button]]></Property>
+				<Property name="textFont" displayName="Default Font" type="Font">
+					<E>$$NXUIDIALOGUEtextFont</E>
+				</Property>
+				<Property name="textColor" displayName="Text Color" type="Color">
+					<E>$$textColor</E>
+				</Property>
+				<Property name="textAlign" displayName="Text Alignment" type="Alignment"><![CDATA[center]]>1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Background">
+				<Property name="fillColor" displayName="Color" type="Color">
+					<E>$$neutral</E>
+				</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Border">
+				<Property name="strokeColor" displayName="Border Color" type="Color">
+					<E>$$strokeColor</E>
+				</Property>
+				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Style">
+				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
+				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
+				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+			</PropertyGroup>
+		</Properties>
+		<Behaviors>
+			<For ref="bg">
+				<D>
+				var tl, tr, br, bl; // Radius of each corner
+				var r = $radius.x;
+				switch ($position.value) {
+					case "middle":
+						tl = tr = br = bl = 0;
+						break;
+					case "left":
+						tl = bl = r;
+						tr = br = 0;
+						break;
+					case "right":
+						tr = br = r;
+						tl = bl =0;
+						break;
+					case "top":
+						tl = tr = r;
+						bl = br = 0;
+						break;
+					case "bottom":
+						tl = tr = 0;
+						bl = br = r;
+						break;
+					default:
+						tl = tr = br =bl = r;
+						break;
+				}
+
+				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
+				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
+				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
+				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
+			</D>
+				<Fill>$fillColor</Fill>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+			<For ref="text">
+				<Font>$textFont</Font>
+				<Fill>$textColor</Fill>
+				<Color>$textColor</Color>
+				<PlainTextContent>
+					<Arg>$textContent</Arg>
+					<Arg>
+					var width = $box.w;
+
+					switch ($dropdown.value) {
+						case "split":
+							width = $box.w - 26; break;
+						case "dropdown":
+							width = $box.w - 12; break;
+					}
+
+					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
+					<Arg>$textAlign</Arg>
+				</PlainTextContent>
+			</For>
+			<For ref="arrow">
+				<Visibility>$dropdown.value != "none"</Visibility>
+				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
+				<Fill>$textColor</Fill>
+			</For>
+			<For ref="split">
+				<Visibility>$dropdown.value == "split"</Visibility>
+				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+		</Behaviors>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<image id="CHECKButton" width="336" height="29" x="-50" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVAAAAAdBAMAAAAOdynsAAAAMFBMVEWMjIyttb21tb21vb3G
+xsbOzs7OztbO1tbO1t7W1tbW1t7e3t7n5+fv7+/39/f///8PPThCAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTDyUCGt1KBQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAAxklEQVRYhe3WMQrCQBCF4ZxAsDBib2llayvoRYw3
+iOAN4gnEnMBcYVMKNpP0YnawN+4VdMNqGywWdh/sf4KPGRgmeoMUuQb8W4DaLkBtF6C2M9Do
+l2NNT4Y2UKaHY01PX+iwaz71HzraJOmpvPgPjderbSYQoMmhyOkKAN1lguQNALoXRPLuP3Rc
+lCQRoPFZUFUDQCdHPdDXEwAqqkaq1n/oQi+eMaDUKgaAzoi5RpjoMs31IW38h3Y/Hiv2Hgrz
+OAMUoLb7AMm9rPYoXrIKAAAAAElFTkSuQmCC
+"/>
+			<path id="bg"/>
+			<text id="text"/>
+			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+		</p:Content>
+	</Shape>
+	<Shape id="TABS" displayName="TABS" icon="Icons/TABButton.png">
+		<Properties>
+			<PropertyGroup>
+				<Property name="box" type="Dimension">85,24</Property>
+				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
+				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Text">
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Tab]]></Property>
+				<Property name="textFont" displayName="Default Font" type="Font">
+					<E>$$NXUIDIALOGUEtextFont</E>
+				</Property>
+				<Property name="textColor" displayName="Text Color" type="Color">
+					<E>$$NXUITextBlue</E>
+				</Property>
+				<Property name="textAlign" displayName="Text Alignment" type="Alignment"><![CDATA[center]]>1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Background">
+				<Property name="fillColor" displayName="Color" type="Color">
+					<E>$$neutral</E>
+				</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Border">
+				<Property name="strokeColor" displayName="Border Color" type="Color">
+					<E>$$strokeColor</E>
+				</Property>
+				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Style">
+				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
+				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
+				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+			</PropertyGroup>
+		</Properties>
+		<Behaviors>
+			<For ref="bg">
+				<D>
+				var tl, tr, br, bl; // Radius of each corner
+				var r = $radius.x;
+				switch ($position.value) {
+					case "middle":
+						tl = tr = br = bl = 0;
+						break;
+					case "left":
+						tl = bl = r;
+						tr = br = 0;
+						break;
+					case "right":
+						tr = br = r;
+						tl = bl =0;
+						break;
+					case "top":
+						tl = tr = r;
+						bl = br = 0;
+						break;
+					case "bottom":
+						tl = tr = 0;
+						bl = br = r;
+						break;
+					default:
+						tl = tr = br =bl = r;
+						break;
+				}
+
+				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
+				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
+				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
+				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
+			</D>
+				<Fill>$fillColor</Fill>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+			<For ref="text">
+				<Font>$textFont</Font>
+				<Fill>$textColor</Fill>
+				<Color>$textColor</Color>
+				<PlainTextContent>
+					<Arg>$textContent</Arg>
+					<Arg>
+					var width = $box.w;
+
+					switch ($dropdown.value) {
+						case "split":
+							width = $box.w - 26; break;
+						case "dropdown":
+							width = $box.w - 12; break;
+					}
+
+					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
+					<Arg>$textAlign</Arg>
+				</PlainTextContent>
+			</For>
+			<For ref="arrow">
+				<Visibility>$dropdown.value != "none"</Visibility>
+				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
+				<Fill>$textColor</Fill>
+			</For>
+			<For ref="split">
+				<Visibility>$dropdown.value == "split"</Visibility>
+				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+		</Behaviors>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<image id="TABS" width="370" height="42" x="-20" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXIAAAAsCAYAAAB41zM6AAAACXBIWXMAABJ0AAASdAHeZh94
+AAAAB3RJTUUH4AYUChoQKqbrIwAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERlc2NyaXB0
+aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0aW1lADX3
+DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAAAAh0RVh0
+V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2zJa/AAAA
+BnRFWHRUaXRsZQCo7tInAAAFeUlEQVR4nO2dTVOzMBDHN7T15aIzvaoHLx78/p/GWw/OOI7e
+rG1pSzxAIAkJhJcQYv+/S31oWDZQ/rtZEh728fHBCQAAQLQkoR0AAAAwjGXTl4yxqfwAPeAc
+gykAQIOQLxYL2mw2tN1uKUmQuM+N8/lM6/WaHh4e6Hg8hnYHABAQq5AnSUL7/Z5eX1/p/v5+
+Sp+AA+/v7/T19UWLxYJOp1Nod8BEYBQGTDSWVoiIVqsVrVarKXwBHbi6uqL9fk+fn58Q8gsh
+yzK6ubmhu7s7yrIstDtgRrQKOTKAeXI+n+n6+prW6zWlaRraHeCZJEno9/eXjscjnl2BGq1C
+DuYLY4yWyyUy8gtguVziWRWwgl9G5GDEdBngOoMmIOQAABA5EHIAAIgcCDkAAEQOhBwAACIH
+Qg4AAJEDIQcAgMgZfR55NU2KkXndAifRxHVhA692oL5LIczTt2w+9jpC0a8xbQIAQDseFwRx
+IoPs9pkOO+ZKNmErF3ZOnM9EeDmnPA70D1Zms/EHMLUP4yUIAPwXvJZW6hIyn0UN1b0+H598
+whiTBI73Cqhe4Jy4CGJuO9jMAHCx+F2iryfltpvNdCNLmanIyNRs2sSwrNBkV8/u3DNcSSyL
+vtT3zfdTthfnwldWmR8v9880YoqBuudQcXDZeH7XCidOkiBbWxFVYlgIIOfkosq1Ugl1LU1o
+waEMILkfnPN6AGGFvw2ZrVXEhX3OiQt/C3X1UVpxIboANkqCYLt2Up9sIwXtGtkSC7kvtnNg
+9CPAbwDEjbfSCtPVWxIyU+Nqc7vwG4/X0T/pmax0JPkG0v2Q24jvWFGy0G3Xg0LNfp9Ojkrz
+6Ebe3uU9H3pT875dSinGoyj7NycI+sa2Izv41vHc+DkHAFR4zMgZ5bdSnj5xbavesnvd1iLd
+LRUD5aYqs2OLSbkL4p+tEcMww4ZXf4Su5VoDmJpiSleOzG2Mtg2jmtq+YsRFziMRUQ4SNrjs
+nJwg6CdXt2nsl5Q56xm4ySfFhvn8qcJtasPVPuh+ANARr6WVSgdtSklkEjeT2I9NkJtG6di0
+s2XiDmDCIXkYM1aCYOhYLRmw2Gj6Wett+vgBgCPzeR95WXcmh+HvgMNMpZ7GkcFMpjpOzRSR
+2cLQn9Jor48NeA7A/8evkGuZnSUhL78MXja2PUQr+uE22UMah4g56mqVqfGQvog5gHHpUz2d
+DiM9LUHo9tvi0mCgrw3BhQZxMAmel+irNcbG37H+UHRK5PnV5UZNJpQ24rtiDnStNKvbs9gP
+XTAX6G6Y9JEb2ilIfbTZ6wvXPvWI7yNBKPvLlHKR+QGqoz0APOH/XSviDrClI8oilXBP8pUH
+XpI4y5ls1Ua0c7XXYL/cgZTvJ8EpgFEVtLoGMJv9Ppmx8jlhgqA8tzQ8zCkacWubsc4BAHZG
+L63Uh/D1IaXepm3Y79S+Ze6tS2lhWJuh/Qwz9GaM5YFDExY9gJXBpUWAVHvMbl/+QwRGcrsG
+yn5NCUL5GgY3kzX7lPtVltUMjRir1j3YDtN6DgAYyHwedgIv/IcAZt7fw3FryYBLcG1YR+Dk
+C2rnYDh4jS0AY9K08A0ATyAjB2AAxucZWGIPJgZCDsAAsBoTzAGUVgAAIHIg5AAAEDkQcgAA
+iBzUyCNG/K8/qNP+f+RrjWt+ebQtEoSQRwpjjE6nE+12O0rTNLQ7wDNJktDhcKA0TWm321GW
+ZaFdAhOxWCxotVo1ijmEPFKSJKGfnx/abDbIzi4Ixhhtt9vQboCJOBwOdHt7S8/Pz3Q6nazt
+IOSRkmUZPT090cvLS2hXAACe+P7+pre3N0qS5seZEPJIeXx8DO0CAMAzriU0zFoBAIDIgZAD
+AEDkQMgBACByIOQAABA5f0aMnEGtpgk6AAAAAElFTkSuQmCC
+"/>
+			<path id="bg"/>
+			<text id="text"/>
+			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+		</p:Content>
+	</Shape>
+	<Shape id="GROUP_OPEN" displayName="GROUP_OPEN" icon="Icons/GROUP_OPEN_Thumb.png">
+		<Properties>
+			<PropertyGroup>
+				<Property name="box" type="Dimension">300,24</Property>
+				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
+				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Text">
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Group Name]]></Property>
+				<Property name="textFont" displayName="Default Font" type="Font">
+					<E>$$NXUIGROUPtextFont</E>
+				</Property>
+				<Property name="textColor" displayName="Text Color" type="Color">
+					<E>$$NXUITextBlue</E>
+				</Property>
+				<Property name="textAlign" displayName="Text Alignment" type="Alignment"><![CDATA[center]]>1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Background">
+				<Property name="fillColor" displayName="Color" type="Color">
+					<E>$$neutral</E>
+				</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Border">
+				<Property name="strokeColor" displayName="Border Color" type="Color">
+					<E>$$strokeColor</E>
+				</Property>
+				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Style">
+				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
+				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
+				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+			</PropertyGroup>
+		</Properties>
+		<Behaviors>
+			<For ref="bg">
+				<D>
+				var tl, tr, br, bl; // Radius of each corner
+				var r = $radius.x;
+				switch ($position.value) {
+					case "middle":
+						tl = tr = br = bl = 0;
+						break;
+					case "left":
+						tl = bl = r;
+						tr = br = 0;
+						break;
+					case "right":
+						tr = br = r;
+						tl = bl =0;
+						break;
+					case "top":
+						tl = tr = r;
+						bl = br = 0;
+						break;
+					case "bottom":
+						tl = tr = 0;
+						bl = br = r;
+						break;
+					default:
+						tl = tr = br =bl = r;
+						break;
+				}
+
+				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
+				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
+				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
+				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
+			</D>
+				<Fill>$fillColor</Fill>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+			<For ref="text">
+				<Font>$textFont</Font>
+				<Fill>$textColor</Fill>
+				<Color>$textColor</Color>
+				<PlainTextContent>
+					<Arg>$textContent</Arg>
+					<Arg>
+					var width = $box.w;
+
+					switch ($dropdown.value) {
+						case "split":
+							width = $box.w - 26; break;
+						case "dropdown":
+							width = $box.w - 12; break;
+					}
+
+					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
+					<Arg>$textAlign</Arg>
+				</PlainTextContent>
+			</For>
+			<For ref="arrow">
+				<Visibility>$dropdown.value != "none"</Visibility>
+				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
+				<Fill>$textColor</Fill>
+			</For>
+			<For ref="split">
+				<Visibility>$dropdown.value == "split"</Visibility>
+				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+		</Behaviors>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<image id="GROUP_OPEN" width="348" height="32" x="-10" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVwAAAAgBAMAAACsr90RAAAAMFBMVEUpjLVrrc6EvdaUxt6l
+zt6t1ufO5+/W5+/e7/fn9/fv7+/v9//3//////8AAAAAAADV5ulAAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTDy4uy/H/LQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAAuklEQVRYhe3WMQrCQBCF4VdIjmBhZe0RBMGj5AjW
+ewcvIYEJA7lM0kTj3kV3VrBOMYQH8ze75cfyAoEMmSeBpq0NK1Ik3dqwogRh4goXV7m4MQaX
+7vUg4b739SThTqjPS8K94WInB3cBGrtwcCccYb82HNwWHc7lQsFd0GhdAwV3xOn7wGUNFNwW
+mh+2BgbuE7shz7YGBu6IQ86va1kDA3fuy2y1J+H+ovnU/gXXs+B6FlzPgutZcD2TD8PilH0W
+OUG8AAAAAElFTkSuQmCC
+"/>
+			<path id="bg"/>
+			<text id="text"/>
+			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+		</p:Content>
+	</Shape>
+	<Shape id="GROUP_CLOSE" displayName="GROUP_CLOSE" icon="Icons/GROUP_CLOSE_Thumb.png">
+		<Properties>
+			<PropertyGroup>
+				<Property name="box" type="Dimension">300,24</Property>
+				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
+				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Text">
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Group Name]]></Property>
+				<Property name="textFont" displayName="Default Font" type="Font">
+					<E>$$NXUIGROUPtextFont</E>
+				</Property>
+				<Property name="textColor" displayName="Text Color" type="Color">
+					<E>$$NXUITextBlue</E>
+				</Property>
+				<Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1<![CDATA[center]]></Property>
+			</PropertyGroup>
+			<PropertyGroup name="Background">
+				<Property name="fillColor" displayName="Color" type="Color">
+					<E>$$neutral</E>
+				</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Border">
+				<Property name="strokeColor" displayName="Border Color" type="Color">
+					<E>$$strokeColor</E>
+				</Property>
+				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Style">
+				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
+				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
+				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+			</PropertyGroup>
+		</Properties>
+		<Behaviors>
+			<For ref="bg">
+				<D>
+				var tl, tr, br, bl; // Radius of each corner
+				var r = $radius.x;
+				switch ($position.value) {
+					case "middle":
+						tl = tr = br = bl = 0;
+						break;
+					case "left":
+						tl = bl = r;
+						tr = br = 0;
+						break;
+					case "right":
+						tr = br = r;
+						tl = bl =0;
+						break;
+					case "top":
+						tl = tr = r;
+						bl = br = 0;
+						break;
+					case "bottom":
+						tl = tr = 0;
+						bl = br = r;
+						break;
+					default:
+						tl = tr = br =bl = r;
+						break;
+				}
+
+				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
+				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
+				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
+				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
+			</D>
+				<Fill>$fillColor</Fill>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+			<For ref="text">
+				<Font>$textFont</Font>
+				<Fill>$textColor</Fill>
+				<Color>$textColor</Color>
+				<PlainTextContent>
+					<Arg>$textContent</Arg>
+					<Arg>
+					var width = $box.w;
+
+					switch ($dropdown.value) {
+						case "split":
+							width = $box.w - 26; break;
+						case "dropdown":
+							width = $box.w - 12; break;
+					}
+
+					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
+					<Arg>$textAlign</Arg>
+				</PlainTextContent>
+			</For>
+			<For ref="arrow">
+				<Visibility>$dropdown.value != "none"</Visibility>
+				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
+				<Fill>$textColor</Fill>
+			</For>
+			<For ref="split">
+				<Visibility>$dropdown.value == "split"</Visibility>
+				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+		</Behaviors>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<image id="GROUP_CLOSE" width="348" height="32" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVwAAAAgBAMAAACsr90RAAAAMFBMVEUpjLVrrc6EvdaUxt6t
+1ue11ufGxsbG3u/Ozs7O5+/e7/fn9/fv7+/v9//39/f///9pyIq7AAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTDzYN640WBgAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAA7ElEQVRYhe3UMQrCQBAF0G8hYudJ9AIiOYI38Aq2
+grVYBCxF2POIgcWcIb0QYpHCQMbdzSZp00j2g58l/HIYXgbJXWhSKujT2EMMT6mhmLYb48E0
+roZmGleZ7eZjTzE4bNuNobguA9V2VfCX4Xozn+pwtN1tN+xfLUIqUmBlO4FdN+nezkxh94O5
+VJi6TmBXoom8sXSVwK5k2HkLDHathsWsWSmBXXsbsGkag12jAc+mMdg1GrwFCrtSb9e+UdiV
+zFvgsCt1Wyjs9qGw24fDbhcOu13+dn8ZTrtnilxauy+V6PBf2tmtJQ//Wbtff/Dvqhd0HDkA
+AAAASUVORK5CYII=
+"/>
+			<path id="bg"/>
+			<text id="text"/>
+			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+		</p:Content>
+	</Shape>
+	<Shape id="SUBGROUP_OPEN" displayName="SUBGROUP_OPEN" icon="Icons/SUBGROUP_OPEN_Thumb.png">
+		<Properties>
+			<PropertyGroup>
+				<Property name="box" type="Dimension">170,24</Property>
+				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
+				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Text">
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Button]]></Property>
+				<Property name="textFont" displayName="Default Font" type="Font">
+					<E>$$NXUIDIALOGUEtextFont</E>
+				</Property>
+				<Property name="textColor" displayName="Text Color" type="Color">
+					<E>$$NXUITextBlue</E>
+				</Property>
+				<Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Background">
+				<Property name="fillColor" displayName="Color" type="Color">
+					<E>$$NXUILightGreen</E>
+				</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Border">
+				<Property name="strokeColor" displayName="Border Color" type="Color">
+					<E>$$strokeColor</E>
+				</Property>
+				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Style">
+				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
+				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
+				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+			</PropertyGroup>
+		</Properties>
+		<Behaviors>
+			<For ref="bg">
+				<D>
+				var tl, tr, br, bl; // Radius of each corner
+				var r = $radius.x;
+				switch ($position.value) {
+					case "middle":
+						tl = tr = br = bl = 0;
+						break;
+					case "left":
+						tl = bl = r;
+						tr = br = 0;
+						break;
+					case "right":
+						tr = br = r;
+						tl = bl =0;
+						break;
+					case "top":
+						tl = tr = r;
+						bl = br = 0;
+						break;
+					case "bottom":
+						tl = tr = 0;
+						bl = br = r;
+						break;
+					default:
+						tl = tr = br =bl = r;
+						break;
+				}
+
+				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
+				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
+				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
+				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
+			</D>
+				<Fill>$fillColor</Fill>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+			<For ref="text">
+				<Font>$textFont</Font>
+				<Fill>$textColor</Fill>
+				<Color>$textColor</Color>
+				<PlainTextContent>
+					<Arg>$textContent</Arg>
+					<Arg>
+					var width = $box.w;
+
+					switch ($dropdown.value) {
+						case "split":
+							width = $box.w - 26; break;
+						case "dropdown":
+							width = $box.w - 12; break;
+					}
+
+					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
+					<Arg>$textAlign</Arg>
+				</PlainTextContent>
+			</For>
+			<For ref="arrow">
+				<Visibility>$dropdown.value != "none"</Visibility>
+				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
+				<Fill>$textColor</Fill>
+			</For>
+			<For ref="split">
+				<Visibility>$dropdown.value == "split"</Visibility>
+				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+		</Behaviors>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<image id="SUBGROUP_OPEN" width="348" height="32" x="-25" y="-5" xlink:href="data:image/png;base64,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
+"/>
+			<path id="bg"/>
+			<text id="text"/>
+			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+		</p:Content>
+	</Shape>
+	<Shape id="SUBGROUP_CLOSE" displayName="SUBGROUP_CLOSE" icon="Icons/SUBGROUP_CLOSE_Thumb.png">
+		<Properties>
+			<PropertyGroup>
+				<Property name="box" type="Dimension">170,24</Property>
+				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
+				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Text">
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Button]]></Property>
+				<Property name="textFont" displayName="Default Font" type="Font">
+					<E>$$NXUIDIALOGUEtextFont</E>
+				</Property>
+				<Property name="textColor" displayName="Text Color" type="Color">
+					<E>$$NXUITextBlue</E>
+				</Property>
+				<Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Background">
+				<Property name="fillColor" displayName="Color" type="Color">
+					<E>$$NXUILightGreen</E>
+				</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Border">
+				<Property name="strokeColor" displayName="Border Color" type="Color">
+					<E>$$strokeColor</E>
+				</Property>
+				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Style">
+				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
+				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
+				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+			</PropertyGroup>
+		</Properties>
+		<Behaviors>
+			<For ref="bg">
+				<D>
+				var tl, tr, br, bl; // Radius of each corner
+				var r = $radius.x;
+				switch ($position.value) {
+					case "middle":
+						tl = tr = br = bl = 0;
+						break;
+					case "left":
+						tl = bl = r;
+						tr = br = 0;
+						break;
+					case "right":
+						tr = br = r;
+						tl = bl =0;
+						break;
+					case "top":
+						tl = tr = r;
+						bl = br = 0;
+						break;
+					case "bottom":
+						tl = tr = 0;
+						bl = br = r;
+						break;
+					default:
+						tl = tr = br =bl = r;
+						break;
+				}
+
+				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
+				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
+				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
+				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
+			</D>
+				<Fill>$fillColor</Fill>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+			<For ref="text">
+				<Font>$textFont</Font>
+				<Fill>$textColor</Fill>
+				<Color>$textColor</Color>
+				<PlainTextContent>
+					<Arg>$textContent</Arg>
+					<Arg>
+					var width = $box.w;
+
+					switch ($dropdown.value) {
+						case "split":
+							width = $box.w - 26; break;
+						case "dropdown":
+							width = $box.w - 12; break;
+					}
+
+					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
+					<Arg>$textAlign</Arg>
+				</PlainTextContent>
+			</For>
+			<For ref="arrow">
+				<Visibility>$dropdown.value != "none"</Visibility>
+				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
+				<Fill>$textColor</Fill>
+			</For>
+			<For ref="split">
+				<Visibility>$dropdown.value == "split"</Visibility>
+				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+		</Behaviors>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<image id="SUBGROUP_CLOSE" width="348" height="32" x="-25" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU0AAAAhBAMAAACvn+RiAAAAMFBMVEUpjLVrrc57tdaMvdac
+xt6lzt611ue93ufe3t7e7+/n7/fn9/f39/f///8AAAAAAAC5NUZ7AAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTEBgadCN+oAAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAD1UlEQVRYhe1YwW4TMRQMVEjQU6/c+il8UD+BA0cU
+BSnXIp/hwPsBLJ8r2e+tVO6J+BVmxtuwCxKCJlW3Ehs53thOPJ43b94qq/2TuL6vHhvB313/
+cZ72GnG+X/L1AQB3Hee6Lfgizm8d5yZsua8JznWL4kttUz5LsRILbVM+o0UD9kW2KZ9WcoDT
+FAtss7gDuEVESYtp1x8j6jVAzfPIrdbmWGE2HsQO92m8T+N4wplyi8maB2gXr6pvn2GvmS9l
+7IpTNGSYo931TLgw9yg1HK+w3lsxP6x5kBbbs2iXL+M3XwJZpv0jkXb1ueIACbAS4YHWgsMU
+0Fl5Akn6oVq6WV19Xl3ZPI+KWzD2eDnj61VYg5hbGNOuguRIFX1U9kG0FAslc/IGNBevt89J
+B3HejjghNrAD7ojRglgBL1dnoAuOB2V+EbMeRIYjZDJMJfCmnrphh+2LN+eM8Mw/M7kiepGa
+GvkUWgadwKCaxiWJRBoJB158NJ4wnZ5Pazer1Zp1czP1z+CmoKYkAGFksQLk6h1J1IQIKYV1
+xI75pBTDeGJfVOTidA2Rujwz5Oq0bq6dCRMEByDZkU6FUBhYZxIRrsO3LDulICFjEacBHOmF
+I1Iu9IyTNAcz784b6+Q0j2A8IAYBVIaLefKKHEp0AOa+ZX3OpFY5B2C1T/N4EIYhG8E+M+3o
+hs3t01ujqcz0SUk4cZDETA0gliCyUAP4ljKq9qqFKSfbNAXMNHKbe/aJdEXt2FaKk0zczPTp
+9EpIkPnESAKY4zTwVKMeM7MmmDIAAoQmuRvvSWUoHpQIDcFoaUe2ROKowe7zt3f6DPEEhgin
+8CZot8QQRS6PDpFXufSQEjQo1dLECtXJ+kVjO7rht/EoL0jz53mqS7FHBKsLcpI6wTAFK5vM
+I2pjleJb7qdxWQFG6AHU69GNW8P/UCVn+lQVQnC5OTdST+Joj60Rt2yy3xGt5BwqxgTc6eSj
+CeovTqzCdkTP31ayzvm06BOiLmvLRiUiYQhKjyiSoKZhDVxURz4lFCvyq5C75ThYxD17Z9SL
+njTm/qn9IUFtJZ+UEulgoydJgoy+jkN4otwIGfNWehyclqCR4vfvSQ4JQGZP8117CmOJTifX
+s7Y7oUQfZMy/0vOtyGtHO+rfDcXB9ZwwfkNucL+esYSEfvXPBl1JkXwUTqzjXC9N0tZ7rSpd
+vW5y0dITn3mlcRkUfpg1tegbfkQvOclEp3Xzsf/y+OO1+fl/CG72+4HXbicJDBE7fR40uRuC
+43eTww6LQ6Ps9kNMrh2Wa2boP8F1/95zh2F/QPBk/gf7AQL+WtT04UxkAAAAAElFTkSuQmCC
+"/>
+			<path id="bg"/>
+			<text id="text"/>
+			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+		</p:Content>
+	</Shape>
+	<Shape id="DIALOGUE_LONG" displayName="DIALOGUE_LONG" icon="Icons/DIALOGUE_LONG.png">
+		<Properties>
+			<PropertyGroup>
+				<Property name="box" type="Dimension">240,20</Property>
+				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
+				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Text">
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[NX Open Dialogue Box]]></Property>
+				<Property name="textFont" displayName="Default Font" type="Font">
+					<E>$$NXUIDIALOGUEtextFont</E>
+				</Property>
+				<Property name="textColor" displayName="Text Color" type="Color">
+					<E>$$defaultDarkTextColor</E>
+				</Property>
+				<Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Background">
+				<Property name="fillColor" displayName="Color" type="Color">
+					<E>$$NXUIGreen</E>
+				</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Border">
+				<Property name="strokeColor" displayName="Border Color" type="Color">
+					<E>$$NXUIGreen</E>
+				</Property>
+				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Style">
+				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
+				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
+				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+			</PropertyGroup>
+		</Properties>
+		<Behaviors>
+			<For ref="bg">
+				<D>
+				var tl, tr, br, bl; // Radius of each corner
+				var r = $radius.x;
+				switch ($position.value) {
+					case "middle":
+						tl = tr = br = bl = 0;
+						break;
+					case "left":
+						tl = bl = r;
+						tr = br = 0;
+						break;
+					case "right":
+						tr = br = r;
+						tl = bl =0;
+						break;
+					case "top":
+						tl = tr = r;
+						bl = br = 0;
+						break;
+					case "bottom":
+						tl = tr = 0;
+						bl = br = r;
+						break;
+					default:
+						tl = tr = br =bl = r;
+						break;
+				}
+
+				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
+				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
+				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
+				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
+			</D>
+				<Fill>$fillColor</Fill>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+			<For ref="text">
+				<Font>$textFont</Font>
+				<Fill>$textColor</Fill>
+				<Color>$textColor</Color>
+				<PlainTextContent>
+					<Arg>$textContent</Arg>
+					<Arg>
+					var width = $box.w;
+
+					switch ($dropdown.value) {
+						case "split":
+							width = $box.w - 26; break;
+						case "dropdown":
+							width = $box.w - 12; break;
+					}
+
+					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
+					<Arg>$textAlign</Arg>
+				</PlainTextContent>
+			</For>
+			<For ref="arrow">
+				<Visibility>$dropdown.value != "none"</Visibility>
+				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
+				<Fill>$textColor</Fill>
+			</For>
+			<For ref="split">
+				<Visibility>$dropdown.value == "split"</Visibility>
+				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+		</Behaviors>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<image id="DIALOGUE_LONG" width="363" height="860" x="-50" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWsAAANcCAYAAACZpo5EAAAACXBIWXMAABJ0AAASdAHeZh94
+AAAAB3RJTUUH4AYTARwLZxtSEQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERlc2NyaXB0
+aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0aW1lADX3
+DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAAAAh0RVh0
+V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2zJa/AAAA
+BnRFWHRUaXRsZQCo7tInAAAgAElEQVR4nO3dX+w+y13Q8RlbOG2JWIpFRLBVBCso2sYLUhsw
+R0LiDSghpLGSyAUXjZA0CJHGCyXRgMEYLkSixJSEYIgxQS5IE6INhj8BScCrUmIMLRHoIZCm
+1ZaetM14sf/mz2dmZ3dnd+fzPO8XOfT3fZ7Z2dl/n5397Oyz9u//wD93BgDQtT92dwMAAOsI
+1gCgAMEaABQgWAOAAgRrAFCAYA0AChwO1j/0zu8wP/TO72jRFgBAxiu3TvDim99i3vfrv2aM
+Mebdb3+H+fzP/RPzv3/lN3/D/PFXv8YYY8xP/9IvNGwmADy3TcH6xTe/xXzr3/p68/avfdG8
++oUXgu++4g1vNF/xhjcaY4z59Gc+Q7AGoMq/f9d3m0+8/Enz8U9+0vy3//lrc6d0qx//x//E
+GGPMt/7Lf3GoTGxTGuR9v/5r5lOf/rR59QsvmE9/5jPml3/j/eY9P/te856ffa/55d94v/n0
+Zz5jjDHmDz760S3VAsDtfuvDv2c+9enPmC/6/D9pvu3r/7b5h9/wdw/VNwXk2s/X2K2Pm7/n
+u7/XGGPMf/mlX0h6z9/41reZv/PWtxljjPm2f/UDuxoEAHf7wW9/p/nC173OvPdXf8X8x/f9
+183T+wHZ7z3nPq9R3bN+8c1vMd/1zd9iXvmKV5gPvvRhMc3x07/0C+aDL33YvPIVrzDvfvs7
+zItvfsumxgDAFX7w299ZjE/f86M/Yj72iY+bv/lVf21X/VKAPhKojdkQrL/hq99q3vylX2aM
+MeZ//c7/mT9/z3d/79zb9r/7ije80XzDV791c4MA4Ezf9c3fYr7wda9bjU/v/9CHzKtfeMF8
+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
+"/>
+			<rect id="blackBg" x="-39" y="30" width="340" height="770" style="fill: #FFFFFF"/>
+			<path id="bg"/>
+			<text id="text"/>
+			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+		</p:Content>
+	</Shape>
+</Shapes>
