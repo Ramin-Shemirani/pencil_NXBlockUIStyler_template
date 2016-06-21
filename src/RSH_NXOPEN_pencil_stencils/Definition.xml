@@ -25,6 +25,7 @@
 			<Property name="NXUIWhite" type="Color" displayName="NXUIWhite">##FFFFFF</Property>
 			<Property name="NXUIOrange" type="Color" displayName="NXUIOrange">#FACC2E</Property>
 			<Property name="NXUILightGreen" type="Color" displayName="NXUILightGreen">#F1F5F5</Property>
+			<Property name="NXUIHover" type="Color" displayName="NXUIHover">#FCD76D</Property>
 		</PropertyGroup>
 		<PropertyGroup name="Colors: Grays">
 			<Property name="neutral" type="Color" displayName="Neutral">#ffffffff</Property>
@@ -200,38 +201,14 @@
 	<Shape id="OKButton" displayName="OKButton" icon="Icons/OKButton.png">
 		<Properties>
 			<PropertyGroup>
-				<Property name="box" type="Dimension">60,20</Property>
-				<Property name="smartColor" displayName="Automatic border color" type="Bool">false</Property>
-				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Text">
-				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Button]]></Property>
-				<Property name="textFont" displayName="Default Font" type="Font">
-					<E>$$textFont</E>
-				</Property>
-				<Property name="textColor" displayName="Text Color" type="Color">
-					<E>$$textColor</E>
-				</Property>
-				<Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Background">
-				<Property name="fillColor" displayName="Color" type="Color">
-					<E>$$neutral</E>
-				</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Border">
-				<Property name="strokeColor" displayName="Border Color" type="Color">
-					<E>$$strokeColor</E>
-				</Property>
-				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Style">
-				<Property name="hoverstatus" displayName="Hover Status" type="Enum" p:enumValues="['standard|Standard', 'hover|Hover']">none</Property>
-				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
-				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+				<Property name="hover" displayName="hover" type="Bool">false</Property>
 			</PropertyGroup>
 		</Properties>
-		<Behaviors/>
+		<Behaviors>
+			<For ref="hover">
+				<Visibility>$hover.value</Visibility>
+			</For>
+		</Behaviors>
 		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
 			<image id="OK" width="74" height="28" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAAAcBAMAAAA0KTSoAAAAMFBMVEUhISEhIWshQowhY60x
 IUpCnM5KISFKnOdjQiFjtedzYyFzzueMe0qMzuecpXuczt45mxpNAAAACXBIWXMAABJ0AAAS
@@ -245,42 +222,31 @@ N1ZxBCY8NpKxiVDWTHop7nVR6k5MTdKjbGMK6DHTEa2QpSdQSHlG5hOo0GTseHS2ovpGkwWd
 8jxEj7KzVq15TGUtUbjCtMX0jiQjGur6wlbaHjjEpHiB51Sk0HXQijfCblPI+oEqnMzQxjzP
 Tplj9l/u26p/1JpmOgAAAABJRU5ErkJggg==
 "/>
+			<image id="hover" width="74" height="28" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAAAcBAMAAAA0KTSoAAAAMFBMVEUAAAAAADEAAFIAOXsA
+Y5w5AAA5ADE5jL1jAACMOQCc3t61YwDejDH/tVL/1mv/997R5UBkAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTBxYQExwPxQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAA3ElEQVQ4jeWTTQ6CMBCF63U8AhsOoEmX3oFLuDEx
+ceXOY1TRA3gSdiS4gO6xzLNYCgX5062TtmmmX1/fTFKWzQkmMR30B1Txm9aZeXhy3Lc9lASZ
+JfZwEYoXGycHaahG7wqtpHjSkuq+SHs9A8VPo76KZUmqFZ+kcFALMUdrvWxTTr+onIHxFQqb
+olqLUNUpcTM1PnyncvnR1YQj1P3CrvdFsokj49BU7I+4H4jvKGGHcwTkkIJy64v6BLpag1Dl
+hlxfEkMeG6rTkdYNYlkW6S+e1p89St+R2XxUbl/2xuCU828eXQAAAABJRU5ErkJggg==
+"/>
 		</p:Content>
 	</Shape>
 	<Shape id="APPLYButton" displayName="APPLYButton" icon="Icons/APPLYButton.png">
 		<Properties>
 			<PropertyGroup>
-				<Property name="box" type="Dimension">71,34</Property>
-				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
-				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Text">
-				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Button]]></Property>
-				<Property name="textFont" displayName="Default Font" type="Font">
-					<E>$$textFont</E>
-				</Property>
-				<Property name="textColor" displayName="Text Color" type="Color">
-					<E>$$textColor</E>
-				</Property>
-				<Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Background">
-				<Property name="fillColor" displayName="Color" type="Color">
-					<E>$$neutral</E>
-				</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Border">
-				<Property name="strokeColor" displayName="Border Color" type="Color">
-					<E>$$strokeColor</E>
-				</Property>
-				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Style">
-				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
-				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
-				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+				<Property name="hover" displayName="hover" type="Bool">false</Property>
 			</PropertyGroup>
 		</Properties>
+		<Behaviors>
+			<For ref="hover">
+				<Visibility>$hover.value</Visibility>
+			</For>
+		</Behaviors>
 		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
 			<image id="APPLY" width="74" height="28" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAAAcBAMAAAA0KTSoAAAAMFBMVEUhISEhIWMhQnshY5xC
 IUJCIWNCe7VSISFjIUJ7nHuMWiGtraW1e0LGxsbOnGPOtXslKfgAAAAACXBIWXMAABJ0AAAS
@@ -294,22 +260,33 @@ Y6rfuHcx5cbUQsm6h2LSJ1wvA1UZSgqoChYu0WXLQsIVhAMq0yGEGnOUI+EzjqGKM6z8dw5a
 CwPHwvuAKowx+gTRmlgKlz0bUAocOcLNV+zqadgNqPMGeSIJpkj55JMuKKB2Oq2MDcGmHZ+5
 DvbLx7OZ2Wt/j6pni96/tlHVyLWlqIrEn6r8ATjrUeTX+Q9MAAAAAElFTkSuQmCC
 "/>
-			<path id="bg"/>
-			<text id="text"/>
-			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
-			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+			<image id="hover" width="74" height="28" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAAAcBAMAAAA0KTSoAAAAMFBMVEUAAAAAAFIAOXsAY5w5
+ACk5AFI5OTE5jLVjAABjADGMOQC1YwDejDH379b/tVL/1muFvCwaAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTCBsSQ+BXmQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAA0klEQVQ4je3UMQrCMBQG4ICgp+gReoTMHqFTR09R
+3+wRnASxQ9diwa5CL2H7+hv0CIWOoi86KDTFbC4+CITkI/l5gai7T6kbvpf5K5fafWwwjSiz
+8FGcaA9VmwC8VBrlcSKqQKsd6ooMPEOKnBrN1KEhhypRgTV6FDAxUy+zoTKRLEucmkpgzcRU
+OVQ7VYqskkOxYTJh5lCSog3lxovceA5ERbFDSQozl/QrSX+yhx60Q+1lpJzYTmxtJ97hB+/4
+bGb5mndeKvNRuR5V7vqF8voBHmVaaat+ov7wAAAAAElFTkSuQmCC
+"/>
 		</p:Content>
 	</Shape>
 	<Shape id="CANCELButton" displayName="CANCELButton" icon="Icons/CANCELButton.png">
 		<Properties>
-			<PropertyGroup/>
-			<PropertyGroup name="Style">
-				<Property name="hovertype" displayName="Hover Type" type="Enum" p:enumValues="['CANCEL|Standard', 'CANCEL_HOVER|Hover']">CANCEL</Property>
+			<PropertyGroup>
+				<Property name="hover" displayName="hover" type="Bool">false</Property>
 			</PropertyGroup>
 		</Properties>
+		<Behaviors>
+			<For ref="hover">
+				<Visibility>$hover.value</Visibility>
+			</For>
+		</Behaviors>
 		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
-			<g id="CANCEL">
-				<image id="CANCEL" width="74" height="28" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAAAcBAMAAAA0KTSoAAAAMFBMVEUhISEhIWMhOXM5c61C
+			<image id="CANCEL" width="74" height="28" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAAAcBAMAAAA0KTSoAAAAMFBMVEUhISEhIWMhOXM5c61C
 ITljISFjnLV7QiF7Y3uUYyGtra21e0LGlGPGrXPGxs7OzpxuUJAmAAAACXBIWXMAABJ0AAAS
 dAHeZh94AAAAB3RJTUUH4AYTCBsyeI53UQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
 c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
@@ -322,12 +299,27 @@ jHqCZ8rYETn3Mu38nYCajNr6bOoANC27UmVDhJZFojYPtlNRspOQj7gnM9gQG1XZiTPyLqRT
 ztIoNOGL2wkWD/AIXcsSxR6QhkYF653+4H+905es+SJJJZtWqSzs8BM/uSuWPBPHN+bsf+wE
 BWqTAAAAAElFTkSuQmCC
 "/>
-			</g>
+			<image id="hover" width="74" height="28" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAAAcBAMAAAA0KTSoAAAAMFBMVEUAAAAAAFIAOXs5AAA5
+ADE5AFI5jL1jAACEMQCMY3u1YwDejDH3zmP3797/1nv/963lCCZlAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTCBwQ4q+gcgAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAABPklEQVQ4ja2TsVKEMBCGVws7H4E3MDM+Bd09gi/g
+TFprK5/jrrF27g1orkJqh7DZwrPjKgtjsTNmAyQ5bm64woVAYH/+/VgCNHXfN0sHeMfl6OBw
+keoyL6/ipU1U/O9cPBv5bFDRiYbDrXFGoqLB7A2KeaXX8WwjlytwF9N8rIpcvA0nEmdOXokr
+tISe5Or+Gt0jSHVt4Fa85DGOXp1AGXTKla0yhcUtVlnFQ1J5+045bR++NdIKnZ5xMZpieE/1
+oW1ZSQJACxdNXDKxpT/8qOC1qkaC0Stx0YsfX2hEVe41dmVUceQi70O7vf4MXq3q9AZ/RcUZ
+l69Jz6AM3AUvXF9hCzeDF6d+nYvU1eU4u754BAlfLH1HGtZGKk6TKPaLY+aIJ1XMuehkTpj3
+K0tw5kSTV53C/+o++rDnd+rmD1QRV19LaH9IAAAAAElFTkSuQmCC
+"/>
 		</p:Content>
 	</Shape>
 	<Shape id="ACTIONButton" displayName="ACTIONButton" icon="Icons/ACTIONButton.png">
 		<Properties>
 			<PropertyGroup>
+				<Property name="disable" displayName="disable" type="Bool">false</Property>
+				<Property name="hover" displayName="hover" type="Bool">false</Property>
 				<Property name="box" type="Dimension">270,20</Property>
 				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
 				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
@@ -346,6 +338,9 @@ BWqTAAAAAElFTkSuQmCC
 				<Property name="fillColor" displayName="Color" type="Color">
 					<E>$$neutral</E>
 				</Property>
+				<Property name="fillColorHover" displayName="Color" type="Color">
+					<E>$$NXUIHover</E>
+				</Property>
 			</PropertyGroup>
 			<PropertyGroup name="Border">
 				<Property name="strokeColor" displayName="Border Color" type="Color">
@@ -360,6 +355,9 @@ BWqTAAAAAElFTkSuQmCC
 			</PropertyGroup>
 		</Properties>
 		<Behaviors>
+			<For ref="hover">
+				<Visibility>$hover.value</Visibility>
+			</For>
 			<For ref="bg">
 				<D>
 				var tl, tr, br, bl; // Radius of each corner
@@ -394,7 +392,7 @@ BWqTAAAAAElFTkSuQmCC
 				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
 				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
 			</D>
-				<Fill>$fillColor</Fill>
+				<Fill>$hover.value ? $fillColorHover : $fillColor</Fill>
 				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
 				<StrokeStyle>$strokeStyle</StrokeStyle>
 			</For>
@@ -442,6 +440,19 @@ tf8IldNA0pJbf8Eh+oEQdBAPGynOTZ/FPWT2mBETM2JiRkzMiMl9jOxFaPsmDQfZCz8HZKS8
 kzjqq4X5jHF+43OQmFaWGjkSxVHwgOYoo4L0yTXKZlzPkXLJgO4oY0nU/bjhg1ELNQG6o4wc
 SFndy8HYdMIToDvK2OnEGACtBWeUQu37rhtkYoBGPp2ZOtPMSPvcPf29eyA78j7/6//GjJiY
 ERMzYnIN4/xZXsm9YqYASFMsAAAAAElFTkSuQmCC
+"/>
+			<image id="hover" width="325" height="32" x="-25" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU0AAAAgBAMAAABkwzfHAAAAMFBMVEVTeMKvr6/71mz71m37
+12381mz812z8120AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGJ7SbAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTBwEVZvV/3AAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAA8ElEQVRYhe2YQQqDMBBF3XVduuhGECYpOYJHyN4j
+eAIZSOb6nVhBWwRdfLHBPKFIFsPjhURodc+CpnpKDtQZed7+n+Q5nN1qmyGnfS89gZSeWK7W
+k40ITe+ksJV5AQCqJ5OftdjpT7A4T2BPcgd6Anu+khbTqKae7IhcWjCI6cCeKqWP751MnmNP
+8p2HzIf1dF1L0aTdXnjqQt8CpiN7siVVi0YWnkFPfguZj+sZacXTImZje0pH4XffA+QUJXA9
+9WyvnaMecY6gPcP3vRQ/9xLoDr3a9/1oSk8spSeW1DMD5JFPz7MVdlFXZ/9juI/mDbqGqG4e
+h56TAAAAAElFTkSuQmCC
 "/>
 			<path id="bg"/>
 			<text id="text"/>
@@ -573,9 +584,12 @@ ERMzYnIN4/xZXsm9YqYASFMsAAAAAElFTkSuQmCC
 			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
 		</p:Content>
 	</Shape>
-	<Shape id="StringInput" displayName="StringInput" icon="Icons/StringInput_Thumb.png">
+	<Shape id="Input" displayName="Input" icon="Icons/StringInput_Thumb.png">
 		<Properties>
 			<PropertyGroup>
+				<Property name="disable" displayName="disable" type="Bool">false</Property>
+				<Property name="hover" displayName="hover" type="Bool">false</Property>
+				<Property name="InputType" type="Enum" displayName="InputType" p:enumValues="['string|String','integer|Integer','double|Double']">string</Property>
 				<Property name="box" type="Dimension">90,24</Property>
 				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
 				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
@@ -618,6 +632,9 @@ ERMzYnIN4/xZXsm9YqYASFMsAAAAAElFTkSuQmCC
 			</PropertyGroup>
 		</Properties>
 		<Behaviors>
+			<For ref="hover">
+				<Visibility>$hover.value</Visibility>
+			</For>
 			<For ref="bg">
 				<D>
 				var tl, tr, br, bl; // Radius of each corner
@@ -705,6 +722,18 @@ DCSgdGEH+cgaxBAMZ/YH5SrbAi30NQfNOqDJgcTFwkCsIiMONsioCRYkkxszfy+ocGyARlqB
 MpmrcdZMvTM1U+ZmciLaFxTxwONnsx74aDGbUYMjaD+ErDDwRJpAp/FUZDZl+qD1a+zfoKjE
 7VfoM0016g/QmqlG/QFaM9WoP0Brphr1LwN9m39K/mjf5Bz7fKSInswAAAAASUVORK5CYII=
 "/>
+			<image id="hover" width="336" height="29" x="-230" y="-2" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVAAAAAdBAMAAAAOdynsAAAAMFBMVEUAAACvr6/71mz71m37
+12381mz812z8123///8AAAAAAAAAAAAAAAAAAAAAAAAAAADXsb+xAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTDBAlH6CDgQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAAx0lEQVRYhe3YMQ7DIAwF0Ixdu2X+UHGEHIGdI+QI
+lsBXyLFr2lRJq0wNSEbhR2LwgJ5AdiSGpZEMC9fIvXTGStCx9IF2qOx969AOvRiUDDPW/SEh
+y1tBFRR+c5GTJVqlUNcI9JFdBKxQcoDLBaMNKir5/Ow+0NeJwgevDRomJJMvfAeVwjxpg5KF
+2JLZQ6P0vzpowgHU/q+sBuWA+Hv18UwrVYPSYTPN6pqJ4/d4Su/xdGaWXvpf36EdWhpaNB3a
+CrTGS0kjeQKnKfN4n+nNRQAAAABJRU5ErkJggg==
+"/>
 			<path id="bg"/>
 			<text id="text"/>
 			<textlabel id="textlabel"/>
@@ -715,143 +744,17 @@ MpmrcdZMvTM1U+ZmciLaFxTxwONnsx74aDGbUYMjaD+ErDDwRJpAp/FUZDZl+qD1a+zfoKjE
 	<Shape id="DropdownInput" displayName="DropdownInput" icon="Icons/DropdownInput.png">
 		<Properties>
 			<PropertyGroup>
-				<Property name="box" type="Dimension">71,34</Property>
+				<Property name="disable" displayName="disable" type="Bool">false</Property>
+				<Property name="hover" displayName="hover" type="Bool">false</Property>
+				<Property name="style" type="Bool" displayName="style">false</Property>
+				<Property name="box" type="Dimension">155,20</Property>
 				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
 				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
 			</PropertyGroup>
 			<PropertyGroup name="Text">
-				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Button]]></Property>
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Dropdownmenu]]></Property>
 				<Property name="textFont" displayName="Default Font" type="Font">
 					<E>$$textFont</E>
-				</Property>
-				<Property name="textColor" displayName="Text Color" type="Color">
-					<E>$$textColor</E>
-				</Property>
-				<Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Background">
-				<Property name="fillColor" displayName="Color" type="Color">
-					<E>$$neutral</E>
-				</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Border">
-				<Property name="strokeColor" displayName="Border Color" type="Color">
-					<E>$$strokeColor</E>
-				</Property>
-				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Style">
-				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
-				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
-				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
-			</PropertyGroup>
-		</Properties>
-		<Behaviors>
-			<For ref="bg">
-				<D>
-				var tl, tr, br, bl; // Radius of each corner
-				var r = $radius.x;
-				switch ($position.value) {
-					case "middle":
-						tl = tr = br = bl = 0;
-						break;
-					case "left":
-						tl = bl = r;
-						tr = br = 0;
-						break;
-					case "right":
-						tr = br = r;
-						tl = bl =0;
-						break;
-					case "top":
-						tl = tr = r;
-						bl = br = 0;
-						break;
-					case "bottom":
-						tl = tr = 0;
-						bl = br = r;
-						break;
-					default:
-						tl = tr = br =bl = r;
-						break;
-				}
-
-				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
-				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
-				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
-				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
-			</D>
-				<Fill>$fillColor</Fill>
-				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
-				<StrokeStyle>$strokeStyle</StrokeStyle>
-			</For>
-			<For ref="text">
-				<Font>$textFont</Font>
-				<Fill>$textColor</Fill>
-				<Color>$textColor</Color>
-				<PlainTextContent>
-					<Arg>$textContent</Arg>
-					<Arg>
-					var width = $box.w;
-
-					switch ($dropdown.value) {
-						case "split":
-							width = $box.w - 26; break;
-						case "dropdown":
-							width = $box.w - 12; break;
-					}
-
-					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
-					<Arg>$textAlign</Arg>
-				</PlainTextContent>
-			</For>
-			<For ref="arrow">
-				<Visibility>$dropdown.value != "none"</Visibility>
-				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
-				<Fill>$textColor</Fill>
-			</For>
-			<For ref="split">
-				<Visibility>$dropdown.value == "split"</Visibility>
-				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
-				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
-				<StrokeStyle>$strokeStyle</StrokeStyle>
-			</For>
-		</Behaviors>
-		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
-			<image id="DROPDOWN" width="336" height="29" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVAAAAAdBAMAAAAOdynsAAAAMFBMVEUiIiKvr6/+/v7+/v/+
-/////v7///7///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADIGQcHAAAACXBIWXMAABJ0AAAS
-dAHeZh94AAAAB3RJTUUH4AYTDB8qCIeC3wAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
-c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
-aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
-AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
-zJa/AAAABnRFWHRUaXRsZQCo7tInAAAB20lEQVRYhe2YzWrDMAzHc9t5p95lge+DzU+w+e6+
-gZ6gGGK//iTZYWnT5qNzD4EI2tJY+vuHvijt8k6se4nqe2s7vQj01F7wAG0teIC2FjxAWwvu
-CzQCuOERudE5H/hpVMRl3ZwBFt3W2wBqoxkeDaCBCRP4KVS4gz7VzYT5vDFqDWiCe6BCCbcx
-K0FvStEQFMByqQ05Qv7gohfo4EDqz81BgAH4DKIV5wRgHusmOSNxN7lE5VF/rbeu696uQE1E
-gfVncuDBBy8pkBd/t2Qj9kgmG/YJnjuFnRO4ew1cQXtpGY4QqRqF/RNNe+m6PAaNyNkLP5wG
-+kDOBrkRaO45z8mQzfJIQNUZHtdzALUqVaJEYjto1oSOpl4ySJ8o5fI9F/sKNJkA0hTVMVpx
-/uKaugVQp1IlKsy0yoxd8hjUKlQFdXqJgjrtUQFV5FR6YhWoKaCouyPUXnraxqBczW8tvdFL
-dOqtTD2XHgVJr60ZLX0yA6prhCNYqkY9dN4Iej1M5MselQ3F8y7Tg3JtX0B1mGZBdY9ys7DU
-d41iiRagf+sp6m4iTYksKShvMkGyqWhYT/OgvL2wdHWN0gv+CTpvk5W/RrexHaDbQ5YE9/Uz
-r7md2gseoK0Fd/OXzi+z6Q9Lle4e4wAAAABJRU5ErkJggg==
-"/>
-			<path id="bg"/>
-			<text id="text"/>
-			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
-			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
-		</p:Content>
-	</Shape>
-	<Shape id="CHECKButton" displayName="CHECKButton" icon="Icons/CHECKButton.png">
-		<Properties>
-			<PropertyGroup>
-				<Property name="box" type="Dimension">250,24</Property>
-				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
-				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Text">
-				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Check Button]]></Property>
-				<Property name="textFont" displayName="Default Font" type="Font">
-					<E>$$NXUIDIALOGUEtextFont</E>
 				</Property>
 				<Property name="textColor" displayName="Text Color" type="Color">
 					<E>$$textColor</E>
@@ -876,6 +779,12 @@ r7md2gseoK0Fd/OXzi+z6Q9Lle4e4wAAAABJRU5ErkJggg==
 			</PropertyGroup>
 		</Properties>
 		<Behaviors>
+			<For ref="style">
+				<Visibility>$style.value</Visibility>
+			</For>
+			<For ref="hover">
+				<Visibility>$hover.value</Visibility>
+			</For>
 			<For ref="bg">
 				<D>
 				var tl, tr, br, bl; // Radius of each corner
@@ -947,7 +856,177 @@ r7md2gseoK0Fd/OXzi+z6Q9Lle4e4wAAAABJRU5ErkJggg==
 			</For>
 		</Behaviors>
 		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
-			<image id="CHECKButton" width="336" height="29" x="-50" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVAAAAAdBAMAAAAOdynsAAAAMFBMVEWMjIyttb21tb21vb3G
+			<image id="DROPDOWN" width="336" height="29" x="-175" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVAAAAAdBAMAAAAOdynsAAAAMFBMVEUiIiKvr6/+/v7+/v/+
+/////v7///7///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADIGQcHAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTDB8qCIeC3wAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAB20lEQVRYhe2YzWrDMAzHc9t5p95lge+DzU+w+e6+
+gZ6gGGK//iTZYWnT5qNzD4EI2tJY+vuHvijt8k6se4nqe2s7vQj01F7wAG0teIC2FjxAWwvu
+CzQCuOERudE5H/hpVMRl3ZwBFt3W2wBqoxkeDaCBCRP4KVS4gz7VzYT5vDFqDWiCe6BCCbcx
+K0FvStEQFMByqQ05Qv7gohfo4EDqz81BgAH4DKIV5wRgHusmOSNxN7lE5VF/rbeu696uQE1E
+gfVncuDBBy8pkBd/t2Qj9kgmG/YJnjuFnRO4ew1cQXtpGY4QqRqF/RNNe+m6PAaNyNkLP5wG
++kDOBrkRaO45z8mQzfJIQNUZHtdzALUqVaJEYjto1oSOpl4ySJ8o5fI9F/sKNJkA0hTVMVpx
+/uKaugVQp1IlKsy0yoxd8hjUKlQFdXqJgjrtUQFV5FR6YhWoKaCouyPUXnraxqBczW8tvdFL
+dOqtTD2XHgVJr60ZLX0yA6prhCNYqkY9dN4Iej1M5MselQ3F8y7Tg3JtX0B1mGZBdY9ys7DU
+d41iiRagf+sp6m4iTYksKShvMkGyqWhYT/OgvL2wdHWN0gv+CTpvk5W/RrexHaDbQ5YE9/Uz
+r7md2gseoK0Fd/OXzi+z6Q9Lle4e4wAAAABJRU5ErkJggg==
+"/>
+			<image id="hover" width="336" height="29" x="-175" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVAAAAAdBAMAAAAOdynsAAAAMFBMVEUiIiKvr6/71mz71m37
+12381mz812z8123///8AAAAAAAAAAAAAAAAAAAAAAAAAAADhy9FiAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTDBEQUAh24wAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAA1UlEQVRYhe3YOw6DMAwGYI9duzE7qXIEjpCdI3AE
+S0lWxhy7Do8CFVMJklH9IzF4QJ8c2ZGAfJNATlfkWTvNRdCmdkMVqlCFKlQulExKOH8fOWTT
+WhAFRb+6yPErWKFQdxPoq7gIcYaSQ3SlYERAAeAxQ1nFj+/dAh07ir7zEqADQF6gXYvRlAPf
+QLnQtxKgeWzoBCWLbItmCw08/zKgQ/5AIx5A7e/KutC8QlOH4fvow5lRugxKh8PUiximHTTs
+11Oc1tOZXfrXd71CFapQhVZI/V86b1wq8rNI/8xqAAAAAElFTkSuQmCC
+"/>
+			<image id="style" width="336" height="29" x="-175" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVEAAAAoBAMAAAC1AtTMAAAAMFBMVEUhISGtra329vb29vf3
+9/cAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACcj2nQAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTEBYZc6kClAAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAAA6ElEQVRYhe3YUQrCMAyA4T7sAl4hywnGDjBLcE/e
+/zomnc5FxPkQaAL5xSF7+kjVlRYK0lp6C/4tpfal1D6RXi/uY+ldpL3HdZoI15SallL7Umpf
+SGkd+TPsL28dpbC9XTrDSpHgvfoAI9/ie71bSpEtlEhvLyko6dyu2NnJlTKQnimOhAcpW3mq
+2FcpLW1XqqRQlbROPqQ0yEVJa53VTCf0IW1pKeiZkpOZtj6kpL+nPn5RW0pKqKR1dvEv9ezs
+ue9y9b/m52n1W+po8WPu+pyXUvt2ae+znPNoO+2JUayzvhil1L5A0gcMjbG0b/jxZgAAAABJ
+RU5ErkJggg==
+"/>
+			<path id="bg"/>
+			<text id="text"/>
+			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
+		</p:Content>
+	</Shape>
+	<Shape id="CHECKButton" displayName="CHECKButton" icon="Icons/CHECKButton.png">
+		<Properties>
+			<PropertyGroup>
+				<Property name="disable" displayName="disable" type="Bool">false</Property>
+				<Property name="checked" displayName="checked" type="Bool">false</Property>
+				<Property name="checkedhover" displayName="checkedhover" type="Bool">false</Property>
+				<Property name="hover" displayName="hover" type="Bool">false</Property>
+				<Property name="box" type="Dimension">250,22</Property>
+				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
+				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Text">
+				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Check Button]]></Property>
+				<Property name="textFont" displayName="Default Font" type="Font">
+					<E>$$NXUIDIALOGUEtextFont</E>
+				</Property>
+				<Property name="textColor" displayName="Text Color" type="Color">
+					<E>$$textColor</E>
+				</Property>
+				<Property name="textAlign" displayName="Text Alignment" type="Alignment"><![CDATA[center]]>1,1</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Background">
+				<Property name="fillColor" displayName="Color" type="Color">
+					<E>$$neutral</E>
+				</Property>
+				<Property name="fillColorHover" displayName="Color" type="Color">
+					<E>$$NXUIHover</E>
+				</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Border">
+				<Property name="strokeColor" displayName="Border Color" type="Color">
+					<E>$$strokeColor</E>
+				</Property>
+				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+			</PropertyGroup>
+			<PropertyGroup name="Style">
+				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
+				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
+				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
+			</PropertyGroup>
+		</Properties>
+		<Behaviors>
+			<For ref="checked">
+				<Visibility>$checked.value</Visibility>
+			</For>
+			<For ref="checkedhover">
+				<Visibility>$checkedhover.value</Visibility>
+			</For>
+			<For ref="hover">
+				<Visibility>$hover.value</Visibility>
+			</For>
+			<For ref="bg">
+				<D>
+				var tl, tr, br, bl; // Radius of each corner
+				var r = $radius.x;
+				switch ($position.value) {
+					case "middle":
+						tl = tr = br = bl = 0;
+						break;
+					case "left":
+						tl = bl = r;
+						tr = br = 0;
+						break;
+					case "right":
+						tr = br = r;
+						tl = bl =0;
+						break;
+					case "top":
+						tl = tr = r;
+						bl = br = 0;
+						break;
+					case "bottom":
+						tl = tr = 0;
+						bl = br = r;
+						break;
+					default:
+						tl = tr = br =bl = r;
+						break;
+				}
+
+				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
+				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
+				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
+				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
+			</D>
+				<Fill>$hover.value ? $fillColorHover : $fillColor</Fill>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+			<For ref="text">
+				<Font>$textFont</Font>
+				<Fill>$textColor</Fill>
+				<Color>$textColor</Color>
+				<PlainTextContent>
+					<Arg>$textContent</Arg>
+					<Arg>
+					var width = $box.w;
+
+					switch ($dropdown.value) {
+						case "split":
+							width = $box.w - 26; break;
+						case "dropdown":
+							width = $box.w - 12; break;
+					}
+
+					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
+					<Arg>$textAlign</Arg>
+				</PlainTextContent>
+			</For>
+			<For ref="arrow">
+				<Visibility>$dropdown.value != "none"</Visibility>
+				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
+				<Fill>$textColor</Fill>
+			</For>
+			<For ref="split">
+				<Visibility>$dropdown.value == "split"</Visibility>
+				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
+				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
+				<StrokeStyle>$strokeStyle</StrokeStyle>
+			</For>
+		</Behaviors>
+		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+			<image id="CHECKButton" width="336" height="29" x="-50" y="-2" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVAAAAAdBAMAAAAOdynsAAAAMFBMVEWMjIyttb21tb21vb3G
 xsbOzs7OztbO1tbO1t7W1tbW1t7e3t7n5+fv7+/39/f///8PPThCAAAACXBIWXMAABJ0AAAS
 dAHeZh94AAAAB3RJTUUH4AYTDyUCGt1KBQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
 c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
@@ -958,6 +1037,79 @@ iOAN4gnEnMBcYVMKNpP0YnawN+4VdMNqGywWdh/sf4KPGRgmeoMUuQb8W4DaLkBtF6C2M9Do
 l2NNT4Y2UKaHY01PX+iwaz71HzraJOmpvPgPjderbSYQoMmhyOkKAN1lguQNALoXRPLuP3Rc
 lCQRoPFZUFUDQCdHPdDXEwAqqkaq1n/oQi+eMaDUKgaAzoi5RpjoMs31IW38h3Y/Hiv2Hgrz
 OAMUoLb7AMm9rPYoXrIKAAAAAElFTkSuQmCC
+"/>
+			<image id="hover" width="336" height="29" x="-50" y="-2" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU8AAAAaBAMAAADF18MxAAAAMFBMVEWMjIyttb21tb29vcbO
+zs7OztbO1tbO1t7W1tbW3t7e3t7e3ufv7+/39/f/1mv////oxF7CAAAACXBIWXMAABJ0AAAS
+dAHeZh94AAAAB3RJTUUH4AYTDyUtsQx3XAAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
+c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
+aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAA
+AAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2
+zJa/AAAABnRFWHRUaXRsZQCo7tInAAABSElEQVRYhe3XQUrDQBSA4TnBAy+QI3Tj2n0XuhKh
+HqCkC3eCiLlAIRdQ0QvYEdemceG2fSEYtzMUPUDoBWJ8L3Zha31uxJeCP8MMndXHMElbU29I
+5q3ciP6hv11t5mYRaFvEZmbuFoG2RYygj1vc9g5oW8QI+tTvh6fRaA+0LWIM3T8+6V3YXdC2
+iDE0DIfnyeQItC1iDD0YRPeIV6BtEcsJ2jsbW4sWtC1iDB3Eqc2yW9C2iDH0MKYD3QToMLKI
+7hqajU75WvJYWlsw8cMUJw4zn0LDbGv0XV+M6UC9vwNtixidaHFJNzTzGWhbxOiOFnxDvX8A
+bYsYQZ+73ZtRMmn/iTq6oM47BG2LWC79cH75e8+35Wv+ipAv+Ji+7mmNNdBg6VMDDFY2NVqF
+dnQYP5ebuq7qGVVVDuk9hVyK02blJcVPTdVG/g5JdW/ajoJtkgAAAABJRU5ErkJggg==
+"/>
+			<image id="checked" width="336" height="29" x="-50" y="-2" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVAAAAAdCAYAAAD8WTTfAAAACXBIWXMAABJ0AAASdAHeZh94
+AAAAB3RJTUUH4AYUFyQX4flV3gAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERlc2NyaXB0
+aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0aW1lADX3
+DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAAAAh0RVh0
+V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2zJa/AAAA
+BnRFWHRUaXRsZQCo7tInAAAFvUlEQVR4nO2czYscRRjGn+rqmd6dHTabdVc2uIKIBklQgsQE
+RBFF8BJBWSKIYLwkNyH+CQHvBgQhrgcvfhy8eRERFkRZo5cgqGDUqIEsq4SIu8HMZGbaw8xO
+V3VXV1dVV8/MZt/fqWe66q236q1+pr6mWRzHMQiCIAhrgnE7QBAEsVshASUIgnCEBJQgCMIR
+ElCCIAhHSEAJgiAcIQElCIJwhASUIAjCkdA04Vvnz3sp8I2zZ73YIQiCGDfGAgoAZ06fLlXY
+u6urpfITBEFMElYCCgCfr32tvV8LQywtLWIqquPGjX/6X8Y9PHrkEScHCYIgJhVrAQWAe5eX
+pc8sYAhYfzl1Yf8+fPblZWzdbOHVlccAAH/8/mtJNwmCICYPJwH1Seav+IyBlbDDGJPtGtgz
+SZu2X5Yie+pXFDD4KT5G37wve5qSVPVwjLFRGYwBFrEfNTb9kph8Sgso5wHCkIMHAeq1Grrg
++PSLH9C+3cX83AwA4Olj9+TmZ4xV0qlshM6XKFaB/IMQI46rF71C4hh9/dXFKx7qmJQuHnzv
+qw5JIUm7jL2BBijaaZL7GmGPs4By3p+y18IQ9XqIMAgwO9vEhQ8von27i8X5Jl587mEAwObm
+hh9v9zDJwMqn+lSHUjxVn30x+U1C3IE4CSgLGKKoBgCYjiLwAGhMT+Pqxha++u43BAHDqZPH
+EfJ+r+bcphhh5CKXKg0sit7CJ06RVdNlcdQL3X2tj4JP6dHGzmepChVOXYdFsII0qhFsdrSY
+l0/6flDH7KhKGBWWqoO+L+T5oo23sqyieCr8YAxME+Oyvpm2ATFenA7SL8zPIYqaiKIm/t3u
+odFooNFoYPWjdTDGcOjBJTxx9D50u110u13wwPW8PpM70s6VOOU3EKXEAlJX6ry29lXEO/aZ
+/FCWR7HGK5QhPoym9cgVTylfIgJDO4wpxBNi82oxqUNCti8Y+ZJbH1cSG7oYO/tm2QbEeLEe
+gS7ctR+XftzEhQ/6x5nm52bw9rkVrK3/gitXr4MxhjMvP45Op1PauZ2+knRWQCl+4saB0tAg
+WwzZmLJPO9hX+i4aH4xiBBdsiSWfVT8A6TLU9ciMFTPrz6p8QCnnlZjUIUHdFxzLcYhn2o/+
+ddkYj6oNiKqwFtCt7Zt46P6Dw1Hl39e38d7H3+D7n66BMYanjj+A5QOz6HQ6ww4WOI1ANSOb
+nNt6WyppUWA4ejLBx8v+0zvMKf2UEauJnDSyddmuaDt36ugJkzpICq7IbxIjj/FUGSkV41G1
+AVEZ1gLa6XTQbHK88sJRAMD7n3yLtfXLAGOYnqrj1Mlj6PV64JwnhYRjPy0l9EmvT1QOih1o
+1XqZASPZtVU9iD7Wa+/oB9xfjIndi7Wy1UKOW//dwvPPHgYAXLz0J36+8hcAhpdOHMG+ZoRe
+rzdYz9nZROIai47YPpzp0Vnh7oal/XReQBKhSh6stI9i3eKcNBLCz0r6eFSZ+g/LNzCiq4NP
+fIu5zxiPqg0I7+y+tzGpFtGNplFM88nVfpxNq7ztWT6VGwmpsXVOPbL/W0ily7NtNbqSN0Ok
+fMNzoAZ18IGwNlE6ntosDjEeVRsQlWEtoLWQo14L0W630G638PprT2KmUceBu2dx4pnDw80j
+ceoZBPldQXXcowjpqInFg80UV272UwKRTiAdQalmWscSByQfxHbPpDGypbE9zADpfo7VbDsO
+jwaZ16E8Cj80aZTxVJo1iLFBO42mDYiqsJ7CR/UaNjauIYqmAACLiwt4580V8CDA9vYWWq0W
+wjAE5zwRTk1nUHaUwvW44jNwarvqdb1sWpMzdvo0RQ9A2fvl0mR9T6fT2zY9g+gYJ13+dAwV
+MTWJp9n5WP294vYvbudiOwZtQIwNawHVvVWpXptBszlTyiGCqBzxTxQEUQIrAaX3eRK7kVG8
+0ITYm7DYx2FFgiCIPcju24UnCIKYEEhACYIgHPkfrel9hXgDY+4AAAAASUVORK5CYII=
+"/>
+			<image id="checkedhover" width="336" height="29" x="-50" y="-2" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU8AAAAaCAYAAAA3+d4CAAAACXBIWXMAABJ0AAASdAHeZh94
+AAAAB3RJTUUH4AYUFzUUKykndAAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERlc2NyaXB0
+aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0aW1lADX3
+DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAAAAh0RVh0
+V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2zJa/AAAA
+BnRFWHRUaXRsZQCo7tInAAAD0UlEQVR4nO3d3YsbVRzG8e+Zc5LZTcJ2u+7KFleQolJalCK1
+BVFEEfSigrJUEMH2pr2z/4PQv6CCUNcLb3y58M6bIsKCKGv1pgi+YLVVC11WKRU3xSbN5HiR
+bGYmyaTZbPYl7POBhWQmc+Z39XBeZs4a771HRETWxQFEP5/d7jpEREaGPXCeYLuLEBEZRQpP
+EZEBOIDzF/cPpbGzL10dSjsiIjudW/tw5vTpDTX03sLChosRERkVLvnl88Wve/445xyzszOM
+hXlu3fqncdDXeeLw45tWoIjITuTaDzw4N5f6bgJDYBpTo9N793Dxyyus3q7w5vyTAPzx+29b
+UKaIyM7SEZ7DFj9GajCm+znTfmLdbXdnjIl/YwxZd9loHSKy+/QMT2sDnLPYICCfyxFh+eyL
+H6jejZiaLALw3NEH+ryVx5MdYINIhl1WAHYEovf4xomh1iIiu0vX8LS2MUzPOUc+73BBwMRE
+iQsfXaJ6N2JmqsSrLz4GwMrKcv93856O7qeIyAjqCE8TGMIwB8B4GGIDKIyPc315la++u0oQ
+GE6eOIazjRC0tr+RvwF8869XfHYbim9kOJ3skababvZAs9rurKNz2kFEdq+Oh+SnpyYJwxJh
+WOLfcp1CoUChUGDh4yWMMRx8ZJanjzxEFEVEUYQN+nzOfi15esxTpuYnjUlcMpzX701yqN68
+R191NI6iTQBEZE2q2zh9314u/7jChQ8bjyxNTRZ55+15Fpd+5dr1mxhjOPP6U9RqtYFu1up9
+dh29JxaWEleYZmjdq8c6PF3q6LfbLCK7Rio8V8u3ObD/0VZv8u+bZd7/5Bu+/+kGxhiePfYw
+c/smqNVqrV5b0G/PExqJ6Rsp5NtTKM6stmvY2uDy8QftNyUiWVLhWavVKJUsb7xyBIAPPv2W
+xaUrYAzjY3lOnjhKvV7HWhs34Nb3tFOcnzs8mbQaLyI9pJIv5yx3/rvDyy8cAuDS5T/55dpf
+gOG144fZUwqp1+vN+ci1BSPb0Whv8VC8q/YeZlaPdLNpiC4iPWzPrkrdFmpax5LB6rc+O7Pq
+8FowEpFYKjxzzpLPOarVCtVqhbdOPUOxkGff/RMcf/5Qa6EouUodBIPFWrerTGJF3vt4znGo
+b/60stFnruJn1jG8KkRkxKWG7WE+x/LyDcJwDICZmWnePTePDQLK5VUqlQrOOay1cWjeI9gy
+gy9jTnHQoMy6rvN45/Oa3a7Vq5oi0ksqPHvtjpTPFSmViptekIjIKGiFp/bjFBHpnwPtAC8i
+sl76H0YiIgNQeIqIDMD4Ye26ISKyi/wPusEJvjPd7y4AAAAASUVORK5CYII=
 "/>
 			<path id="bg"/>
 			<text id="text"/>
@@ -1110,9 +1262,10 @@ AEDkQMgBACByIOQAABA5f0aMnEGtpgk6AAAAAElFTkSuQmCC
 			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
 		</p:Content>
 	</Shape>
-	<Shape id="GROUP_OPEN" displayName="GROUP_OPEN" icon="Icons/GROUP_OPEN_Thumb.png">
+	<Shape id="GROUP" displayName="GROUP" icon="Icons/GROUP_OPEN_Thumb.png">
 		<Properties>
 			<PropertyGroup>
+				<Property name="close" displayName="close" type="Bool">false</Property>
 				<Property name="box" type="Dimension">300,24</Property>
 				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
 				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
@@ -1145,6 +1298,9 @@ AEDkQMgBACByIOQAABA5f0aMnEGtpgk6AAAAAElFTkSuQmCC
 			</PropertyGroup>
 		</Properties>
 		<Behaviors>
+			<For ref="close">
+				<Visibility>$close.value</Visibility>
+			</For>
 			<For ref="bg">
 				<D>
 				var tl, tr, br, bl; // Radius of each corner
@@ -1228,119 +1384,7 @@ ewcvIYEJA7lM0kTj3kV3VrBOMYQH8ze75cfyAoEMmSeBpq0NK1Ik3dqwogRh4goXV7m4MQaX
 mh+2BgbuE7shz7YGBu6IQ86va1kDA3fuy2y1J+H+ovnU/gXXs+B6FlzPgutZcD2TD8PilH0W
 OUG8AAAAAElFTkSuQmCC
 "/>
-			<path id="bg"/>
-			<text id="text"/>
-			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
-			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
-		</p:Content>
-	</Shape>
-	<Shape id="GROUP_CLOSE" displayName="GROUP_CLOSE" icon="Icons/GROUP_CLOSE_Thumb.png">
-		<Properties>
-			<PropertyGroup>
-				<Property name="box" type="Dimension">300,24</Property>
-				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
-				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Text">
-				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Group Name]]></Property>
-				<Property name="textFont" displayName="Default Font" type="Font">
-					<E>$$NXUIGROUPtextFont</E>
-				</Property>
-				<Property name="textColor" displayName="Text Color" type="Color">
-					<E>$$NXUITextBlue</E>
-				</Property>
-				<Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1<![CDATA[center]]></Property>
-			</PropertyGroup>
-			<PropertyGroup name="Background">
-				<Property name="fillColor" displayName="Color" type="Color">
-					<E>$$neutral</E>
-				</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Border">
-				<Property name="strokeColor" displayName="Border Color" type="Color">
-					<E>$$strokeColor</E>
-				</Property>
-				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Style">
-				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
-				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
-				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
-			</PropertyGroup>
-		</Properties>
-		<Behaviors>
-			<For ref="bg">
-				<D>
-				var tl, tr, br, bl; // Radius of each corner
-				var r = $radius.x;
-				switch ($position.value) {
-					case "middle":
-						tl = tr = br = bl = 0;
-						break;
-					case "left":
-						tl = bl = r;
-						tr = br = 0;
-						break;
-					case "right":
-						tr = br = r;
-						tl = bl =0;
-						break;
-					case "top":
-						tl = tr = r;
-						bl = br = 0;
-						break;
-					case "bottom":
-						tl = tr = 0;
-						bl = br = r;
-						break;
-					default:
-						tl = tr = br =bl = r;
-						break;
-				}
-
-				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
-				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
-				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
-				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
-			</D>
-				<Fill>$fillColor</Fill>
-				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
-				<StrokeStyle>$strokeStyle</StrokeStyle>
-			</For>
-			<For ref="text">
-				<Font>$textFont</Font>
-				<Fill>$textColor</Fill>
-				<Color>$textColor</Color>
-				<PlainTextContent>
-					<Arg>$textContent</Arg>
-					<Arg>
-					var width = $box.w;
-
-					switch ($dropdown.value) {
-						case "split":
-							width = $box.w - 26; break;
-						case "dropdown":
-							width = $box.w - 12; break;
-					}
-
-					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
-					<Arg>$textAlign</Arg>
-				</PlainTextContent>
-			</For>
-			<For ref="arrow">
-				<Visibility>$dropdown.value != "none"</Visibility>
-				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
-				<Fill>$textColor</Fill>
-			</For>
-			<For ref="split">
-				<Visibility>$dropdown.value == "split"</Visibility>
-				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
-				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
-				<StrokeStyle>$strokeStyle</StrokeStyle>
-			</For>
-		</Behaviors>
-		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
-			<image id="GROUP_CLOSE" width="348" height="32" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVwAAAAgBAMAAACsr90RAAAAMFBMVEUpjLVrrc6EvdaUxt6t
+			<image id="close" width="348" height="32" x="-5" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVwAAAAgBAMAAACsr90RAAAAMFBMVEUpjLVrrc6EvdaUxt6t
 1ue11ufGxsbG3u/Ozs7O5+/e7/fn9/fv7+/v9//39/f///9pyIq7AAAACXBIWXMAABJ0AAAS
 dAHeZh94AAAAB3RJTUUH4AYTDzYN640WBgAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
 c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
@@ -1359,9 +1403,10 @@ AAAASUVORK5CYII=
 			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
 		</p:Content>
 	</Shape>
-	<Shape id="SUBGROUP_OPEN" displayName="SUBGROUP_OPEN" icon="Icons/SUBGROUP_OPEN_Thumb.png">
+	<Shape id="SUBGROUP" displayName="SUBGROUP" icon="Icons/SUBGROUP_OPEN_Thumb.png">
 		<Properties>
 			<PropertyGroup>
+				<Property name="close" displayName="close" type="Bool">false</Property>
 				<Property name="box" type="Dimension">170,24</Property>
 				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
 				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
@@ -1394,6 +1439,9 @@ AAAASUVORK5CYII=
 			</PropertyGroup>
 		</Properties>
 		<Behaviors>
+			<For ref="close">
+				<Visibility>$close.value</Visibility>
+			</For>
 			<For ref="bg">
 				<D>
 				var tl, tr, br, bl; // Radius of each corner
@@ -1494,119 +1542,7 @@ kNYOr1wblzSeQEXPN8wFZXmju/4utOKrnQlIO404pHAehZIVtVWV/pXk1FThC+YxOUzR7iFN
 G5jjummeztnkF/Xem6E0xe0mtsTRKCCx4dpNK7HzbdtKatXQvRnyDQIHVPp/3bthgsieuKa1
 Ob6/n6kPiVgriMcPT9QHueYoK/wAAAAASUVORK5CYII=
 "/>
-			<path id="bg"/>
-			<text id="text"/>
-			<path id="arrow" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
-			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
-		</p:Content>
-	</Shape>
-	<Shape id="SUBGROUP_CLOSE" displayName="SUBGROUP_CLOSE" icon="Icons/SUBGROUP_CLOSE_Thumb.png">
-		<Properties>
-			<PropertyGroup>
-				<Property name="box" type="Dimension">170,24</Property>
-				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
-				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Text">
-				<Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Button]]></Property>
-				<Property name="textFont" displayName="Default Font" type="Font">
-					<E>$$NXUIDIALOGUEtextFont</E>
-				</Property>
-				<Property name="textColor" displayName="Text Color" type="Color">
-					<E>$$NXUITextBlue</E>
-				</Property>
-				<Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Background">
-				<Property name="fillColor" displayName="Color" type="Color">
-					<E>$$NXUILightGreen</E>
-				</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Border">
-				<Property name="strokeColor" displayName="Border Color" type="Color">
-					<E>$$strokeColor</E>
-				</Property>
-				<Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
-			</PropertyGroup>
-			<PropertyGroup name="Style">
-				<Property name="dropdown" displayName="Dropdown type" type="Enum" p:enumValues="['none|None', 'dropdown|Dropdown', 'split|Split dropdown']">none</Property>
-				<Property name="dropdownDirection" displayName="Dropdown direction" type="Enum" p:enumValues="['1|Down', '-1|Up']">1</Property>
-				<Property name="position" displayName="Group position" type="Enum" p:enumValues="['none|None', 'left|Left', 'right|Right', 'middle|Middle', 'top|Top', 'bottom|Bottom']">none</Property>
-			</PropertyGroup>
-		</Properties>
-		<Behaviors>
-			<For ref="bg">
-				<D>
-				var tl, tr, br, bl; // Radius of each corner
-				var r = $radius.x;
-				switch ($position.value) {
-					case "middle":
-						tl = tr = br = bl = 0;
-						break;
-					case "left":
-						tl = bl = r;
-						tr = br = 0;
-						break;
-					case "right":
-						tr = br = r;
-						tl = bl =0;
-						break;
-					case "top":
-						tl = tr = r;
-						bl = br = 0;
-						break;
-					case "bottom":
-						tl = tr = 0;
-						bl = br = r;
-						break;
-					default:
-						tl = tr = br =bl = r;
-						break;
-				}
-
-				"M " + tl + ",0 L " + ($box.w - tr) + ",0 a " + tr + "," + tr + " 0 0,1 " + tr + "," + tr
-				+ "l 0," + ($box.h - tr - br) + " a " + br + "," + br + " 0 0,1 " + -br + "," + br
-				+ "L " + bl + "," + $box.h + " a " + bl + "," + bl + " 0 0,1 " + -bl + "," + -bl
-				+ "L 0," + tl + " a " + tl + "," + tl + " 0 0,1 " + tl + "," + -tl + "Z"
-			</D>
-				<Fill>$fillColor</Fill>
-				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
-				<StrokeStyle>$strokeStyle</StrokeStyle>
-			</For>
-			<For ref="text">
-				<Font>$textFont</Font>
-				<Fill>$textColor</Fill>
-				<Color>$textColor</Color>
-				<PlainTextContent>
-					<Arg>$textContent</Arg>
-					<Arg>
-					var width = $box.w;
-
-					switch ($dropdown.value) {
-						case "split":
-							width = $box.w - 26; break;
-						case "dropdown":
-							width = $box.w - 12; break;
-					}
-
-					Bound.fromBox(new Dimension(width, $box.h), 12, 6)</Arg>
-					<Arg>$textAlign</Arg>
-				</PlainTextContent>
-			</For>
-			<For ref="arrow">
-				<Visibility>$dropdown.value != "none"</Visibility>
-				<D>"M " + ($box.w - ($dropdown.value == "split" ? 17 : 20)) + "," + (($box.h / 2) + ($dropdownDirection.value * -2)) + " l 8,0 l -4," + ($dropdownDirection.value * 4) + " Z"</D>
-				<Fill>$textColor</Fill>
-			</For>
-			<For ref="split">
-				<Visibility>$dropdown.value == "split"</Visibility>
-				<D>"M" + ($box.w - 26) + ",0 l 0," + $box.h</D>
-				<StrokeColor>$smartColor.value ? collection.darken($fillColor, 5) : $strokeColor</StrokeColor>
-				<StrokeStyle>$strokeStyle</StrokeStyle>
-			</For>
-		</Behaviors>
-		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
-			<image id="SUBGROUP_CLOSE" width="348" height="32" x="-25" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU0AAAAhBAMAAACvn+RiAAAAMFBMVEUpjLVrrc57tdaMvdac
+			<image id="close" width="348" height="32" x="-25" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU0AAAAhBAMAAACvn+RiAAAAMFBMVEUpjLVrrc57tdaMvdac
 xt6lzt611ue93ufe3t7e7+/n7/fn9/f39/f///8AAAAAAAC5NUZ7AAAACXBIWXMAABJ0AAAS
 dAHeZh94AAAAB3RJTUUH4AYTEBgadCN+oAAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERl
 c2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0
@@ -1638,9 +1574,10 @@ vW5y0dITn3mlcRkUfpg1tegbfkQvOclEp3Xzsf/y+OO1+fl/CG72+4HXbicJDBE7fR40uRuC
 			<path id="split" style="opacity:1;fill:#000000;fill-opacity:1;stroke:none"/>
 		</p:Content>
 	</Shape>
-	<Shape id="DIALOGUE_LONG" displayName="DIALOGUE_LONG" icon="Icons/DIALOGUE_LONG.png">
+	<Shape id="DIALOGUE" displayName="DIALOGUE" icon="Icons/DIALOGUE_LONG.png">
 		<Properties>
 			<PropertyGroup>
+				<Property name="size" displayName="size" p:enumValues="['short|Short', 'normal|Normal', 'long|Long']" type="Enum">long</Property>
 				<Property name="box" type="Dimension">240,20</Property>
 				<Property name="smartColor" displayName="Automatic border color" type="Bool">true</Property>
 				<Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">4,0</Property>
@@ -1673,6 +1610,20 @@ vW5y0dITn3mlcRkUfpg1tegbfkQvOclEp3Xzsf/y+OO1+fl/CG72+4HXbicJDBE7fR40uRuC
 			</PropertyGroup>
 		</Properties>
 		<Behaviors>
+			<For ref="size">
+				<Visibility>switch ($size.value) {
+					case "short":
+short.value = false
+												break;
+					case "normal":
+normal.value = false
+												break;
+					case "long":
+long.value = false
+												break;				default:
+								break;
+				} </Visibility>
+			</For>
 			<For ref="bg">
 				<D>
 				var tl, tr, br, bl; // Radius of each corner
@@ -1744,7 +1695,409 @@ vW5y0dITn3mlcRkUfpg1tegbfkQvOclEp3Xzsf/y+OO1+fl/CG72+4HXbicJDBE7fR40uRuC
 			</For>
 		</Behaviors>
 		<p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
-			<image id="DIALOGUE_LONG" width="363" height="860" x="-50" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWsAAANcCAYAAACZpo5EAAAACXBIWXMAABJ0AAASdAHeZh94
+			<image id="short" width="363" height="860" x="-50" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWoAAAE1CAYAAADOAKrBAAAACXBIWXMAABJ0AAASdAHeZh94
+AAAAB3RJTUUH4AYTAgEW+TfsjQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERlc2NyaXB0
+aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0aW1lADX3
+DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAAAAh0RVh0
+V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2zJa/AAAA
+BnRFWHRUaXRsZQCo7tInAAAdBklEQVR4nO3dXwwlV13A8d9hC9uWiKVYRARbRbAWRbfxgdQG
+zEpIfClKGtJYSeSBh0ZImgqRxgcl0YDBGB7ERokpSYMhxgR5IE2INhj+BCQpPhWJMbREoEsg
+m1Zbuulujg/3zsz5O3Pmz5n53Xu/n2Tb3Ttnzpw5M/ObM7+Zudf83of/zAoAQK0XbN0AAEA/
+AjUAKEegBgDlCNQAoByBGgCUI1ADgHKzA/VH73mPfPSe9yzRFgBAwlVjZzh/7lZ55OuPiojI
+/XfdLS97yY+3f//qN78hP3bNtSIi8pkvf3HBZgLA6RoVqM+fu1Xe+ZtvlbvefF6uOXvWm3bL
+jTfJLTfeJCIil69cIVADOCh/d+/75NlLz8kzzz0n//ofj7YD0rEe+qM/FhGRd/7Fn88q4xqV
++njk64/K85cvyzVnz8rlK1fkK994TB783MPy4Ocelq984zG5fOWKiIj84KmnxlQLAJv71pPf
+k+cvX5FXvuwn5F1v/S35gzt+Z1Z9TTAu/byPGfsK+YPv+4CIiPzzl78YjZrfdtvt8tu33S4i
+Iu/6yw+PbgwAaPCRd98jr7j+enn4a1+Vf3jkX0bP7wZjd9Sc+3xI8Yj6/Llb5b473yFXnTkj
+j194Mpna+MyXvyiPX3hSrjpzRu6/6245f+7W4oYAwFo+8u57euPT+z/+gDz97DPyG2/41Un1
+p4Lz1CAtMiJQ3/HG2+Tca14rIiL/9Z3/aT9/8H0faEfZ7rRbbrxJ7njjbaMaAwC13XfnO+QV
+118/GJ8ee+IJuebsWXnbPksw1hIj6UZxoL5w8aL86NIlERG55kXdjcTHLzwpj194sv13M+1H
+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
+xLVgD5YAAAAASUVORK5CYII=
+"/>
+			<image id="normal" width="363" height="860" x="-50" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWsAAAI4CAYAAACstMi8AAAACXBIWXMAABJ0AAASdAHeZh94
+AAAAB3RJTUUH4AYTAgAQCU94+QAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERlc2NyaXB0
+aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0aW1lADX3
+DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAAAAh0RVh0
+V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2zJa/AAAA
+BnRFWHRUaXRsZQCo7tInAAAgAElEQVR4nO3df+g/SX3Y8dfUa09PelJN2tTEKuQH6h+l518i
+Qsu1CPnHtCAitUKE9g9pAiJKIv4RhAYTWkr+qAg1cMJhkVIwEUogtAeCiO0f2r+UEkLvpLV3
+EnPx6l08vC/TP97v3Z2Zfc3szO7s7sz7/XzA6ffzfs/Ozv567exrZ99r/tnv/CsrAIBmPfkb
+nzJ/5exGAACWEawBoAMEawDoAMEaADpAsAaADhCsAaADm4P1733k1+T3PvJrNdoCAIh4qHSC
+xx97hzz1rW+KiMgnP/BBecOjrxv//d/+53fkr7/mERER+cOvf61iMwHgvhUF68cfe4d86B++
+Rz7w9x+X1zz8sPfd29/8Fnn7m98iIiKvPHhAsAbQlX//0Y/LSy//WF788Y/lv/6Pb46d0lJP
+/sanRETkQ7/725vKhIrSIE9965vyk1dekdc8/LC88uCBfOM735Yn/viP5Ik//iP5xne+La88
+eCAiIn/2wx+WVAsAp/tfz/5f+ckrD+SNb/gp+fB7fln+5Xv/yab6hoCc+/mS4pz1X33oIXnl
+wQP5g69/TT77lS/LU9+6nIE++5Uvyx98/WvyyoMH8lOve92qxgDAWT7zpS/KJz7/Ofnwv/kd
+efbP/1ze+ba3yz99/B8V1+P2lsPA7P5d0qsWKQjWjz/2DvnY+94vD73qVfL0c8+qaY4//PrX
+5OnnnpWHXvUq+eQHPiiPP/aOosYAwBH+9b/4SDI+feLzn5MXXnpR/sHf/Xur6tcC9pZALVIQ
+rN/7znfJYz//iyIi8if/53+Pnz/x8d+UJz7+m+Pfw3dvf/Nb5L3vfFdxgwBgTx973/vlZ17/
++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
+"/>
+			<image id="long" width="363" height="860" x="-50" y="-5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWsAAANcCAYAAACZpo5EAAAACXBIWXMAABJ0AAASdAHeZh94
 AAAAB3RJTUUH4AYTARwLZxtSEQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERlc2NyaXB0
 aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0aW1lADX3
 DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAAAAh0RVh0
